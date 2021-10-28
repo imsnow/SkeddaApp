@@ -8,10 +8,15 @@ dependencies {
     implementation("androidx.compose.ui:ui:${Versions.composeVersion}")
     implementation("androidx.compose.ui:ui-tooling:${Versions.composeVersion}")
     implementation("androidx.compose.foundation:foundation:${Versions.composeVersion}")
-    implementation("androidx.activity:activity-compose:1.4.0")
+    implementation("androidx.activity:activity-compose:${Versions.activityComposeVersion}")
     implementation("androidx.compose.material:material:${Versions.composeVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutineVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutineVersion}")
+    with(Deps.Koin) {
+        implementation(core)
+        implementation(android)
+        implementation(compose)
+    }
 }
 
 android {

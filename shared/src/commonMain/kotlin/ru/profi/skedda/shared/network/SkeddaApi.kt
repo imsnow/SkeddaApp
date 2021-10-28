@@ -1,4 +1,4 @@
-package ru.profi.skedda.network
+package ru.profi.skedda.shared.network
 
 import io.ktor.client.*
 import io.ktor.client.features.cookies.*
@@ -7,8 +7,8 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import ru.profi.skedda.network.login.LoginPayload
-import ru.profi.skedda.network.login.LoginRequestPayload
+import ru.profi.skedda.shared.network.login.LoginPayload
+import ru.profi.skedda.shared.network.login.LoginRequestPayload
 
 class SkeddaApi {
 

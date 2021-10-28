@@ -31,12 +31,13 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("dev.icerock.moko:mvvm-core:0.11.0")
+                api("dev.icerock.moko:mvvm-core:0.11.0")
                 implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")
                 implementation("io.ktor:ktor-client-serialization:${Versions.ktorVersion}")
                 implementation("io.ktor:ktor-client-logging:${Versions.ktorVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutineVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serializationVersion}")
+                implementation(Deps.Koin.core)
             }
         }
 //        val commonTest by getting {
@@ -72,5 +73,9 @@ android {
     defaultConfig {
         minSdk = Versions.minSdkVersion
         targetSdk = Versions.targetSdkVersion
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }

@@ -1,4 +1,4 @@
-package ru.profi.skedda.featues.choose
+package ru.profi.skedda.shared.featues.choose
 
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 

@@ -1,4 +1,4 @@
-package ru.profi.skedda.network.login
+package ru.profi.skedda.shared.network.login
 
 import kotlinx.serialization.Serializable
 
