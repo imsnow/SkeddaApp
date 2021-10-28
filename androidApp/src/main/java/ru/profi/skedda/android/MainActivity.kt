@@ -1,39 +1,32 @@
 package ru.profi.skedda.android
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import android.os.Bundle
-import android.widget.Button
-import ru.profi.skedda.Greeting
-import android.widget.TextView
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import ru.profi.skedda.network.SkeddaApi
-import kotlin.coroutines.CoroutineContext
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 
-fun greet(): String {
-    return Greeting().greeting()
-}
-
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        val tv: TextView = findViewById(R.id.text_view)
-        tv.text = greet()
-
-        val button = findViewById<Button>(R.id.button)
-        button.setOnClickListener {
-            val api = SkeddaApi()
-            GlobalScope.launch {
-                api.login(
-                    email = "miha_mai@mail.ru",
-                    password = "hui"
-                )
-                api.webs()
-            }
-
+        setContent {
+            AppScreen()
         }
+
+//        val tv: TextView = findViewById(R.id.text_view)
+//        tv.text = greet()
+//
+//        val button = findViewById<Button>(R.id.button)
+//        button.setOnClickListener {
+//            val api = SkeddaApi()
+//            GlobalScope.launch {
+//                api.login(
+//                    email = "miha_mai@mail.ru",
+//                    password = "hui"
+//                )
+//                api.webs()
+//            }
+//
+//        }
     }
 }

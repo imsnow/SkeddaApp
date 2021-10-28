@@ -25,6 +25,7 @@ class SkeddaApi {
         }
     }
 
+    @Throws(Exception::class)
     suspend fun login(email: String, password: String): String {
         val url = Url(LOGIN_HOST)
         val loginData = LoginRequestPayload(
@@ -38,6 +39,7 @@ class SkeddaApi {
         return result
     }
 
+    @Throws(Exception::class)
     suspend fun webs() {
         val url = Url("https://ruwinmike.skedda.com/webs")
         val result = client.get<String>(url)
