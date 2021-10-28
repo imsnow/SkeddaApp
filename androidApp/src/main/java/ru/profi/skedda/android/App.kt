@@ -1,7 +1,8 @@
-package ru.profi.shared.android
+package ru.profi.skedda.android
 
 import android.app.Application
-import ru.profi.shared.android.di.appModule
+import org.koin.core.component.KoinComponent
+import ru.profi.skedda.android.di.appModule
 import ru.profi.skedda.shared.di.initKoin
 
 class App : Application() {
@@ -9,7 +10,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         initKoin {
-            appModule
+            modules(appModule)
         }
     }
 }
