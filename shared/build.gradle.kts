@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     kotlin("multiplatform")
-    kotlin("plugin.serialization") version ("1.5.31")
+    kotlin("plugin.serialization") version (Versions.kotlinVersion)
     kotlin("native.cocoapods")
     id("com.android.library")
 }
@@ -28,51 +28,48 @@ kotlin {
         podfile = project.file("../iosApp/Podfile")
     }
 
-    val ktorVersion = "1.6.4"
-    val coroutinesVersion = "1.5.2-native-mt"
-
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
-                implementation("io.ktor:ktor-client-logging:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+                implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")
+                implementation("io.ktor:ktor-client-serialization:${Versions.ktorVersion}")
+                implementation("io.ktor:ktor-client-logging:${Versions.ktorVersion}")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutineVersion}")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serializationVersion}")
             }
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
-            }
-        }
+//        val commonTest by getting {
+//            dependencies {
+//                implementation(kotlin("test-common"))
+//                implementation(kotlin("test-annotations-common"))
+//            }
+//        }
         val androidMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-android:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+                implementation("io.ktor:ktor-client-android:${Versions.ktorVersion}")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutineVersion}")
             }
         }
-        val androidTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13.2")
-            }
-        }
+//        val androidTest by getting {
+//            dependencies {
+//                implementation(kotlin("test-junit"))
+//                implementation("junit:junit:4.13.2")
+//            }
+//        }
         val iosMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-ios:$ktorVersion")
+                implementation("io.ktor:ktor-client-ios:${Versions.ktorVersion}")
             }
         }
-        val iosTest by getting
+//        val iosTest by getting
     }
 }
 
 android {
-    compileSdk = 31
+    compileSdk = Versions.compileSdkVersion
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = 21
-        targetSdk = 31
+        minSdk = Versions.minSdkVersion
+        targetSdk = Versions.targetSdkVersion
     }
 }
