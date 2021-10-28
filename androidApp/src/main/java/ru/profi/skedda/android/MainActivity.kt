@@ -15,6 +15,7 @@ fun greet(): String {
 }
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -26,10 +27,11 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener {
             val api = SkeddaApi()
             GlobalScope.launch {
-                val result = api.login(
-                    email = "IgnatovMV@profi.ru",
+                api.login(
+                    email = "miha_mai@mail.ru",
                     password = "hui"
                 )
+                api.webs()
             }
 
         }

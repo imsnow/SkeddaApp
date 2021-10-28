@@ -1,8 +1,10 @@
 package ru.profi.skedda.network
 
 import io.ktor.client.*
+import io.ktor.client.features.cookies.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
+import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import ru.profi.skedda.network.login.LoginPayload
@@ -13,6 +15,13 @@ class SkeddaApi {
     private val client = HttpClient {
         install(JsonFeature) {
             serializer = KotlinxSerializer()
+        }
+        install(Logging) {
+            logger = Logger.SIMPLE
+            level = LogLevel.ALL
+        }
+        install(HttpCookies) {
+            storage = AcceptAllCookiesStorage()
         }
     }
 
@@ -25,8 +34,14 @@ class SkeddaApi {
             contentType(ContentType.Application.Json)
             body = loginData
         }
-        println(">>> result $result")
+        println(">>> login result $result")
         return result
+    }
+
+    suspend fun webs() {
+        val url = Url("https://ruwinmike.skedda.com/webs")
+        val result = client.get<String>(url)
+        println(">>> webs result $result")
     }
 
     internal companion object {
