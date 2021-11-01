@@ -5,5 +5,5 @@ import org.koin.dsl.module
 import ru.profi.skedda.shared.featues.login.LoginViewModel
 
 val appModule = module {
-    viewModel { LoginViewModel(get()) }
+    viewModel { LoginViewModel(get(), get(), get()) }
 }
