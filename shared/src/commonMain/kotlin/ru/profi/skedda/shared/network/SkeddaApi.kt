@@ -25,6 +25,8 @@ class SkeddaApi {
         }
     }
 
+    private var retrieveToken: String? = null;
+
     @Throws(Exception::class)
     suspend fun login(email: String, password: String): Unit {
         val url = Url("${LOGIN_HOST}/logins")
@@ -39,15 +41,21 @@ class SkeddaApi {
     }
 
     @Throws(Exception::class)
-    private suspend fun retrieveVerificationToken(): String {
+    private suspend fun retrieveVerificationToken(force: Boolean = false): String {
+        if (this.retrieveToken !== null && !force) {
+            return this.retrieveToken;
+        }
+
         val url = Url("${USER_HOST}/booking")
         val html = client.get<String>(url);
 
         // FIXME: 01.11.2021 сделать нормальный парсинг
-        val pattern = """<input[^>]+name="__RequestVerificationToken"[^>]+value="(.*?)"""".toRegex()
+        val pattern = """<input[^>]+nSame="__RequestVerificationToken"[^>]+value="(.*?)"""".toRegex()
 
         // FIXME: 01.11.2021 сделать нормальную ошибку
-        return pattern.find(html)?.destructured?.component1() ?: throw Exception("No request verification token in html");
+        this.retrieveToken = pattern.find(html)?.destructured?.component1() ?: throw Exception("No request verification token in html");
+
+        return this.retrieveToken;
     }
 
     @Throws(Exception::class)
