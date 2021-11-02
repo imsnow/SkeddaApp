@@ -37,6 +37,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-logging:${Versions.ktorVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutineVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serializationVersion}")
+                implementation("com.soywiz.korlibs.klock:klock:${Versions.klockVersion}")
                 implementation(Deps.Koin.core)
             }
         }
