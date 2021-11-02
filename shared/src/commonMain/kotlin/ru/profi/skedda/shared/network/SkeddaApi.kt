@@ -51,7 +51,7 @@ class SkeddaApi {
     // FIXME: 01.11.2021 подумать о нормальной реализации хранения
     @Throws(Exception::class)
     private suspend fun retrieveVerificationToken(force: Boolean = false): String {
-        var token = this.retrieveToken?.takeIf { !force };
+        var token = retrieveToken?.takeIf { !force }
 
         if (token !== null) {
             return token;
@@ -73,10 +73,10 @@ class SkeddaApi {
 
     @Throws(Exception::class)
     suspend fun webs(): Webs {
-        val verificationToken = this.retrieveVerificationToken();
+        val verificationToken = retrieveVerificationToken();
 
         val url = Url("${USER_HOST}/webs")
-        return client.get<Webs>(url) {
+        return client.get(url) {
             header("X-Skedda-RequestVerificationToken", verificationToken)
         }
     }
@@ -85,9 +85,11 @@ class SkeddaApi {
         val verificationToken = this.retrieveVerificationToken();
 
         val urlBuilder = URLBuilder("${USER_HOST}/bookingList")
-        with(urlBuilder.parameters) {
-            set("start", formatter.format(start))
-            set("end", formatter.format(end))
+        urlBuilder.parameters.apply {
+            "start" to formatter.format(start)
+            "end" to formatter.format(end)
+//            set("start", formatter.format(start))
+//            set("end", formatter.format(end))
         }
 
         return client.get<BookingLists>(urlBuilder.build()) {

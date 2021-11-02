@@ -47,5 +47,5 @@ data class Space(
 @Serializable
 data class SpaceInfo(
     val desc: String?,
-    val images: Array<String>
+    val images: List<String>
 )

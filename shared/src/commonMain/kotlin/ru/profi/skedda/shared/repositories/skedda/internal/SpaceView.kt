@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 data class SpaceView(
     val id: Int,
     val name: String,
-    val spaces: Array<Int>,
+    val spaces: List<Int>,
     val venue: Int,
 )
