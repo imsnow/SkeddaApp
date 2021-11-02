@@ -16,7 +16,7 @@ import ru.profi.skedda.shared.repositories.skedda.internal.Webs
 import kotlinx.serialization.json.Json as KotlinJson
 
 class SkeddaApi {
-    private val formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+    private val formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss")
 
     private val client = HttpClient {
         install(JsonFeature) {
@@ -33,7 +33,7 @@ class SkeddaApi {
         }
     }
 
-    private var retrieveToken: String? = null;
+    private var retrieveToken: String? = null
 
     @Throws(Exception::class)
     suspend fun login(email: String, password: String): Unit {
@@ -83,18 +83,18 @@ class SkeddaApi {
 
     suspend fun bookingList(start: Long, end: Long): BookingLists {
         val verificationToken = this.retrieveVerificationToken();
+        val url = Url("${USER_HOST}/bookingslists")
 
-        val urlBuilder = URLBuilder("${USER_HOST}/bookingList")
-        urlBuilder.parameters.apply {
-            "start" to formatter.format(start)
-            "end" to formatter.format(end)
-//            set("start", formatter.format(start))
-//            set("end", formatter.format(end))
-        }
+        val startDate = formatter.format(start)
 
-        return client.get<BookingLists>(urlBuilder.build()) {
+        val bookingList = client.get<BookingLists>(url) {
             header("X-Skedda-RequestVerificationToken", verificationToken)
+
+            parameter("start", startDate)
+            parameter("end", formatter.format(end))
         }
+
+        return bookingList
     }
 
 
