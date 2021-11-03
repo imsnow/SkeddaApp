@@ -7,6 +7,7 @@ object Versions {
     const val coroutineVersion = "1.5.2-native-mt"
     const val serializationVersion = "1.3.0"
     const val koinVersion = "3.1.3"
+    const val klockVersion = "2.2.2"
 
     // Android
     const val composeVersion = "1.0.4"
