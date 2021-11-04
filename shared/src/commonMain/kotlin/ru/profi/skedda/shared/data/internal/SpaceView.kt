@@ -1,4 +1,4 @@
-package ru.profi.skedda.shared.repositories.skedda.internal
+package ru.profi.skedda.shared.data.internal
 
 import kotlinx.serialization.Serializable
 

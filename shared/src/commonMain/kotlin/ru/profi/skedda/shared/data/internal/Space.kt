@@ -1,17 +1,17 @@
-package ru.profi.skedda.shared.repositories.skedda.internal
+package ru.profi.skedda.shared.data.internal
 
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Space(
-    val children: List<Space>,
+//    val children: List<Space>,
     val id: Int,
-    val index: Int,
+//    val index: Int,
     val info: SpaceInfo,
     val name: String,
-    val nonAdminVisible: Boolean,
-    val parents: List<Space>,
-    val venue: Int,
+//    val nonAdminVisible: Boolean,
+//    val parents: List<Space>,
+//    val venue: Int,
 )
 
 @Serializable

@@ -1,7 +1,6 @@
 package ru.profi.skedda.shared.featues.login
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeSpan
+import com.soywiz.klock.*
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import io.ktor.client.features.*
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -43,12 +42,17 @@ class LoginViewModel(
                 password = state.value.password
             )
 
-            api.webs()
+            val spaces = api.webs()
+            println(">>> spaces $spaces")
+//            api.booking()
 
-            api.bookingList(
-                start = DateTime.now().minus(DateTimeSpan(days = 7)).unixMillisLong,
-                end = DateTime.now().unixMillisLong,
+            val now = DateTime.now()
+
+            val list = api.bookingList(
+                start = now.unixMillisLong,
+                end = (now + 1.days).unixMillisLong,
             )
+            println(">>> list $list")
         }
     }
 }
