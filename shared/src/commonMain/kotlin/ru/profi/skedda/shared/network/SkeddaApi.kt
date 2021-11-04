@@ -13,9 +13,11 @@ import ru.profi.skedda.shared.network.login.LoginPayload
 import ru.profi.skedda.shared.network.login.LoginRequestPayload
 import ru.profi.skedda.shared.data.internal.BookingLists
 import ru.profi.skedda.shared.data.internal.Webs
+import ru.profi.skedda.shared.repositories.UserLogin
 import kotlinx.serialization.json.Json as KotlinJson
 
-class SkeddaApi {
+internal class SkeddaApi {
+
     private val formatter = ISO8601.DATETIME_COMPLETE
 
     private val client = HttpClient {
@@ -36,16 +38,17 @@ class SkeddaApi {
     private var retrieveToken: String? = null
 
     @Throws(Exception::class)
-    suspend fun login(email: String, password: String): Unit {
+    suspend fun login(email: String, password: String): UserLogin {
         val url = Url("${MAIN_HOST}/logins")
         val loginData = LoginRequestPayload(
             LoginPayload(username = email, password = password)
         )
-
-        client.post<String>(url) {
+        val user = client.post<UserLogin>(url) {
             contentType(ContentType.Application.Json)
             body = loginData
         }
+        println(">>> user $user")
+        return user
     }
 
     // FIXME: 01.11.2021 подумать о нормальной реализации хранения

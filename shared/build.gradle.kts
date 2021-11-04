@@ -32,6 +32,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api("dev.icerock.moko:mvvm-core:0.11.0")
+                implementation("com.russhwolf:multiplatform-settings-no-arg:0.8.1")
                 implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")
                 implementation("io.ktor:ktor-client-serialization:${Versions.ktorVersion}")
                 implementation("io.ktor:ktor-client-logging:${Versions.ktorVersion}")

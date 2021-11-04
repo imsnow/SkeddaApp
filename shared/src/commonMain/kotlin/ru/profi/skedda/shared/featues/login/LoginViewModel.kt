@@ -8,11 +8,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.profi.skedda.shared.network.SkeddaApi
+import ru.profi.skedda.shared.repositories.UserRepository
 import ru.profi.skedda.shared.validators.EmailValidator
 import ru.profi.skedda.shared.validators.PasswordValidator
 
-class LoginViewModel(
-    private val api: SkeddaApi,
+class LoginViewModel internal constructor(
+    private val userRepository: UserRepository,
     private val emailValidator: EmailValidator,
     private val passwordValidator: PasswordValidator
 ) : ViewModel() {
@@ -37,22 +38,22 @@ class LoginViewModel(
 
     fun login() {
         viewModelScope.launch(ceh) {
-            api.login(
-                email = state.value.email,
-                password = state.value.password
-            )
+//            userRepository.login(
+//                email = state.value.email,
+//                password = state.value.password
+//            )
 
-            val spaces = api.webs()
-            println(">>> spaces $spaces")
-//            api.booking()
-
-            val now = DateTime.now()
-
-            val list = api.bookingList(
-                start = now.unixMillisLong,
-                end = (now + 1.days).unixMillisLong,
-            )
-            println(">>> list $list")
+//            val spaces = api.webs()
+//            println(">>> spaces $spaces")
+////            api.booking()
+//
+//            val now = DateTime.now()
+//
+//            val list = api.bookingList(
+//                start = now.unixMillisLong,
+//                end = (now + 1.days).unixMillisLong,
+//            )
+//            println(">>> list $list")
         }
     }
 }

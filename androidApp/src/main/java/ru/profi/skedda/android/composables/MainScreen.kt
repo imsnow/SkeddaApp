@@ -10,10 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import org.koin.androidx.compose.getViewModel
+import ru.profi.skedda.shared.featues.main.MainViewModel
 
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen() {
+    val mainViewModel: MainViewModel = getViewModel()
     BottomSheetScaffold(
         sheetContent = { BookingScreen() },
         sheetPeekHeight = 2.dp
