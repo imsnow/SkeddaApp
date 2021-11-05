@@ -20,6 +20,12 @@ internal class SkeddaApi {
 
     private val formatter = ISO8601.DATETIME_COMPLETE
 
+    private var tokenHandler: AuthTokenHandler? = null
+
+    fun setTokenHandler(handler: AuthTokenHandler) {
+        tokenHandler = handler
+    }
+
     private val client = HttpClient {
         install(JsonFeature) {
             serializer = KotlinxSerializer(KotlinJson {
@@ -47,6 +53,8 @@ internal class SkeddaApi {
             contentType(ContentType.Application.Json)
             body = loginData
         }
+        tokenHandler?.onTokenReceived("hello")
+
         println(">>> user $user")
         return user
     }

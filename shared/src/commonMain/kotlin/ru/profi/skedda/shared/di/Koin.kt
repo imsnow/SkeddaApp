@@ -21,10 +21,10 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
 fun initKoin() = initKoin {}
 
 fun commonModules() = module {
-    single { SkeddaApi() }
     single { EmailValidator }
     single { PasswordValidator }
     single { UserRepository(get()) }
+    single { SkeddaApi() }
 }
 
 fun viewModules() = module {

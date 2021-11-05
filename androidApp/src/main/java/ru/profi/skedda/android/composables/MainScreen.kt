@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -17,10 +19,19 @@ import ru.profi.skedda.shared.featues.main.MainViewModel
 @Composable
 fun MainScreen() {
     val mainViewModel: MainViewModel = getViewModel()
+    val state = mainViewModel.state.collectAsState()
     BottomSheetScaffold(
         sheetContent = { BookingScreen() },
         sheetPeekHeight = 2.dp
     ) {
-        ScheduleScreen()
+        println(">>> need login ${state.value.needLogin}")
+        if (state.value.needLogin) {
+            LoginScreen()
+        } else {
+            ScheduleScreen()
+        }
     }
+//    if (state.value.needLogin) {
+//        LaunchedEffect(key1 =, block =)
+//    }
 }

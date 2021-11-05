@@ -38,10 +38,10 @@ class LoginViewModel internal constructor(
 
     fun login() {
         viewModelScope.launch(ceh) {
-//            userRepository.login(
-//                email = state.value.email,
-//                password = state.value.password
-//            )
+            userRepository.login(
+                email = state.value.email,
+                password = state.value.password
+            )
 
 //            val spaces = api.webs()
 //            println(">>> spaces $spaces")

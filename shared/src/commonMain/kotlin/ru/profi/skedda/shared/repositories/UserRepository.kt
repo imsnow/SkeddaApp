@@ -3,31 +3,34 @@ package ru.profi.skedda.shared.repositories
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.get
 import com.russhwolf.settings.set
+import ru.profi.skedda.shared.network.AuthTokenHandler
 import ru.profi.skedda.shared.network.SkeddaApi
 
 internal class UserRepository(
     private val api: SkeddaApi
-){
+): AuthTokenHandler {
 
     private val settings: Settings = Settings()
 
-    suspend fun loadUser(): User? {
-
-        println(">>> before ${settings.get<String>(KEY_TOKEN)}")
-
-        settings[KEY_TOKEN] = "huilo"
-
-        println(">>> after ${settings.get<String>(KEY_TOKEN)}")
-
-        return null
+    init {
+        api.setTokenHandler(this)
     }
 
-    suspend fun login(email: String, password: String): User? {
-        return try {
+    fun loadUser(): String? {
+        return settings[KEY_TOKEN]
+    }
+
+    override fun onTokenReceived(token: String) {
+        println(">>> save token $token")
+//        settings[KEY_TOKEN] = token
+    }
+
+    suspend fun login(email: String, password: String) {
+        try {
             val userLogin = api.login(email, password)
-            userLogin.login
+            println(">>> login success ${userLogin.login}")
         } catch (e: Exception) {
-            null
+            println(">>> login error $e")
         }
     }
 
