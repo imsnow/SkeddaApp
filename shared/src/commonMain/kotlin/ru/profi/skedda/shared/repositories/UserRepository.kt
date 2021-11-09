@@ -12,17 +12,21 @@ internal class UserRepository(
 
     private val settings: Settings = Settings()
 
+    override val token: String?
+        get() = settings[KEY_TOKEN]
+
     init {
         api.setTokenHandler(this)
     }
 
     fun loadUser(): String? {
+        println(">>> load ${settings.get<String>(KEY_TOKEN)}")
         return settings[KEY_TOKEN]
     }
 
     override fun onTokenReceived(token: String) {
-        println(">>> save token $token")
-//        settings[KEY_TOKEN] = token
+        println(">>> save $token")
+        settings[KEY_TOKEN] = token
     }
 
     suspend fun login(email: String, password: String) {

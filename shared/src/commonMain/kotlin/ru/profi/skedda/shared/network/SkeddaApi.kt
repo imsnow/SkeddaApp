@@ -41,8 +41,6 @@ internal class SkeddaApi {
         }
     }
 
-    private var retrieveToken: String? = null
-
     @Throws(Exception::class)
     suspend fun login(email: String, password: String): UserLogin {
         val url = Url("${MAIN_HOST}/logins")
@@ -53,21 +51,17 @@ internal class SkeddaApi {
             contentType(ContentType.Application.Json)
             body = loginData
         }
-        tokenHandler?.onTokenReceived("hello")
 
-        println(">>> user $user")
         return user
     }
 
-    // FIXME: 01.11.2021 подумать о нормальной реализации хранения
     @Throws(Exception::class)
-    private suspend fun retrieveVerificationToken(force: Boolean = false): String {
-        var token = retrieveToken?.takeIf { !force }
+    private suspend fun retrieveVerificationToken(): String {
+        return tokenHandler?.token
+            ?: requestVerificationToken().also { tokenHandler?.onTokenReceived(it) }
+    }
 
-        if (token !== null) {
-            return token
-        }
-
+    private suspend fun requestVerificationToken(): String {
         val url = Url("${USER_HOST}/booking")
         val html = client.get<String>(url)
 
@@ -75,11 +69,8 @@ internal class SkeddaApi {
         val pattern = """<input[^>]+name="__RequestVerificationToken"[^>]+value="(.*?)"""".toRegex()
 
         // FIXME: 01.11.2021 сделать нормальную ошибку
-        token = pattern.find(html)?.destructured?.component1() ?: throw Exception("No request verification token in html");
-
-        this.retrieveToken = token
-
-        return token
+        return pattern.find(html)?.destructured?.component1()
+            ?: throw Exception("No request verification token in html")
     }
 
     @Throws(Exception::class)
@@ -106,19 +97,15 @@ internal class SkeddaApi {
         val verificationToken = this.retrieveVerificationToken();
         val url = Url("${USER_HOST}/bookingslists")
 
-        val startDate = formatter.format(start)
-        println(">>> start date $startDate")
-
         val bookingList = client.get<BookingLists>(url) {
             header(KEY_TOKEN_HEADER, verificationToken)
 
-            parameter("start", startDate)
+            parameter("start", formatter.format(start))
             parameter("end", formatter.format(end))
         }
 
         return bookingList
     }
-
 
 
     internal companion object {

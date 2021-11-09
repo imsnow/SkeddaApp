@@ -9,13 +9,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.profi.skedda.shared.network.SkeddaApi
 import ru.profi.skedda.shared.repositories.UserRepository
+import ru.profi.skedda.shared.router.Router
 import ru.profi.skedda.shared.validators.EmailValidator
 import ru.profi.skedda.shared.validators.PasswordValidator
 
 class LoginViewModel internal constructor(
     private val userRepository: UserRepository,
     private val emailValidator: EmailValidator,
-    private val passwordValidator: PasswordValidator
+    private val passwordValidator: PasswordValidator,
+    private val router: Router
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginViewState())
@@ -42,6 +44,7 @@ class LoginViewModel internal constructor(
                 email = state.value.email,
                 password = state.value.password
             )
+            router.goToSchedule()
 
 //            val spaces = api.webs()
 //            println(">>> spaces $spaces")

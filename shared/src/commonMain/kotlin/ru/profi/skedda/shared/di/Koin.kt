@@ -7,6 +7,7 @@ import ru.profi.skedda.shared.featues.login.LoginViewModel
 import ru.profi.skedda.shared.featues.main.MainViewModel
 import ru.profi.skedda.shared.featues.schedule.ScheduleViewModel
 import ru.profi.skedda.shared.network.SkeddaApi
+import ru.profi.skedda.shared.repositories.SpaceRepository
 import ru.profi.skedda.shared.repositories.UserRepository
 import ru.profi.skedda.shared.validators.EmailValidator
 import ru.profi.skedda.shared.validators.PasswordValidator
@@ -25,10 +26,11 @@ fun commonModules() = module {
     single { PasswordValidator }
     single { UserRepository(get()) }
     single { SkeddaApi() }
+    single { SpaceRepository(get()) }
 }
 
 fun viewModules() = module {
-    factory { LoginViewModel(get(), get(), get()) }
-    factory { ScheduleViewModel() }
+    factory { LoginViewModel(get(), get(), get(), get()) }
+    factory { ScheduleViewModel(get(), get()) }
     factory { MainViewModel(get()) }
 }

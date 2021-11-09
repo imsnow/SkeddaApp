@@ -9,7 +9,7 @@ import ru.profi.skedda.shared.featues.login.LoginViewState
 import ru.profi.skedda.shared.repositories.UserRepository
 
 class MainViewModel internal constructor(
-    private val userRepository: UserRepository
+    userRepository: UserRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainViewState())
@@ -19,10 +19,5 @@ class MainViewModel internal constructor(
     init {
         val hasUser = userRepository.loadUser() != null
         _state.value = _state.value.copy(needLogin = !hasUser)
-//        viewModelScope.launch {
-//            _state.value = _state.value.copy(needLogin = true)
-//            delay(5000L)
-//            _state.value = _state.value.copy(needLogin = false)
-//        }
     }
 }
