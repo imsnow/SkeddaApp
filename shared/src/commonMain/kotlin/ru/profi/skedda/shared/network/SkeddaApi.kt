@@ -16,7 +16,7 @@ import ru.profi.skedda.shared.data.internal.Webs
 import ru.profi.skedda.shared.repositories.UserLogin
 import kotlinx.serialization.json.Json as KotlinJson
 
-internal class SkeddaApi {
+internal class SkeddaApi(networkClient: NetworkClient) {
 
     private val formatter = ISO8601.DATETIME_COMPLETE
 
@@ -26,20 +26,7 @@ internal class SkeddaApi {
         tokenHandler = handler
     }
 
-    private val client = HttpClient {
-        install(JsonFeature) {
-            serializer = KotlinxSerializer(KotlinJson {
-                ignoreUnknownKeys = true
-            })
-        }
-        install(Logging) {
-            logger = Logger.SIMPLE
-            level = LogLevel.ALL
-        }
-        install(HttpCookies) {
-            storage = AcceptAllCookiesStorage()
-        }
-    }
+    private val client = networkClient.client
 
     @Throws(Exception::class)
     suspend fun login(email: String, password: String): UserLogin {

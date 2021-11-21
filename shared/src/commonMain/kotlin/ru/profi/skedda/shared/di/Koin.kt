@@ -6,6 +6,7 @@ import org.koin.dsl.module
 import ru.profi.skedda.shared.featues.login.LoginViewModel
 import ru.profi.skedda.shared.featues.main.MainViewModel
 import ru.profi.skedda.shared.featues.schedule.ScheduleViewModel
+import ru.profi.skedda.shared.network.NetworkClient
 import ru.profi.skedda.shared.network.SkeddaApi
 import ru.profi.skedda.shared.repositories.SpaceRepository
 import ru.profi.skedda.shared.repositories.UserRepository
@@ -15,7 +16,7 @@ import ru.profi.skedda.shared.validators.PasswordValidator
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
         appDeclaration()
-        modules(commonModules(), viewModules())
+        modules(commonModules(), networkModule(), viewModules())
     }
 
 // for iOS
@@ -25,8 +26,12 @@ fun commonModules() = module {
     single { EmailValidator }
     single { PasswordValidator }
     single { UserRepository(get()) }
-    single { SkeddaApi() }
     single { SpaceRepository(get()) }
+}
+
+fun networkModule() = module {
+    single { NetworkClient() }
+    single { SkeddaApi(get()) }
 }
 
 fun viewModules() = module {
