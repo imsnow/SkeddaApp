@@ -20,11 +20,7 @@ internal class SkeddaApi(networkClient: NetworkClient) {
 
     private val formatter = ISO8601.DATETIME_COMPLETE
 
-    private var tokenHandler: AuthTokenHandler? = null
-
-    fun setTokenHandler(handler: AuthTokenHandler) {
-        tokenHandler = handler
-    }
+    private var token: String? = null
 
     private val client = networkClient.client
 
@@ -32,7 +28,12 @@ internal class SkeddaApi(networkClient: NetworkClient) {
     suspend fun login(email: String, password: String): UserLogin {
         val url = Url("${MAIN_HOST}/logins")
         val loginData = LoginRequestPayload(
-            LoginPayload(username = email, password = password)
+            LoginPayload(
+                username = email,
+                password = password,
+                rememberMe = false,
+                arbitraryerrors = null
+            )
         )
         val user = client.post<UserLogin>(url) {
             contentType(ContentType.Application.Json)
@@ -44,8 +45,7 @@ internal class SkeddaApi(networkClient: NetworkClient) {
 
     @Throws(Exception::class)
     private suspend fun retrieveVerificationToken(): String {
-        return tokenHandler?.token
-            ?: requestVerificationToken().also { tokenHandler?.onTokenReceived(it) }
+        return token ?: requestVerificationToken().also { token = it }
     }
 
     private suspend fun requestVerificationToken(): String {
@@ -71,7 +71,7 @@ internal class SkeddaApi(networkClient: NetworkClient) {
     }
 
     suspend fun booking() {
-        val verificationToken = this.retrieveVerificationToken();
+        val verificationToken = retrieveVerificationToken();
         val url = Url("${USER_HOST}/booking")
 
         val result = client.get<String>(url) {

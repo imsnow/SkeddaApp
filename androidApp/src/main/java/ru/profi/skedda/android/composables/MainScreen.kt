@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.getViewModel
+import ru.profi.skedda.shared.featues.main.LoginType
 import ru.profi.skedda.shared.featues.main.MainViewModel
 
 @ExperimentalMaterialApi
@@ -24,11 +25,11 @@ fun MainScreen() {
         sheetContent = { BookingScreen() },
         sheetPeekHeight = 2.dp
     ) {
-        println(">>> need login ${state.value.needLogin}")
-        if (state.value.needLogin) {
-            LoginScreen()
-        } else {
-            ScheduleScreen()
+        println(">>> type ${state.value.type}")
+        when (state.value.type) {
+            LoginType.NEED_LOGIN -> LoginScreen()
+            LoginType.HAS_USER -> ScheduleScreen()
+            LoginType.PREPARING -> Unit
         }
     }
 //    if (state.value.needLogin) {

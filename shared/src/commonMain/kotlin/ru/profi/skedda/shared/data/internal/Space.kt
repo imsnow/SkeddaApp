@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Space(
 //    val children: List<Space>,
-    val id: Int,
+    val id: Long,
 //    val index: Int,
     val info: SpaceInfo,
     val name: String,

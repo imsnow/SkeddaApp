@@ -33,7 +33,8 @@ class ScheduleViewModel(
             time = timeString
         )
         viewModelScope.launch(ceh) {
-            spaceRepository.loadSpaces()
+            val spaces = spaceRepository.loadSpaces()
+            _state.value = state.value.copy(spaces = spaces)
         }
     }
 

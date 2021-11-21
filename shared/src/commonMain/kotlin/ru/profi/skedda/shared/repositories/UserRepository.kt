@@ -3,42 +3,40 @@ package ru.profi.skedda.shared.repositories
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.get
 import com.russhwolf.settings.set
-import ru.profi.skedda.shared.network.AuthTokenHandler
 import ru.profi.skedda.shared.network.SkeddaApi
 
 internal class UserRepository(
     private val api: SkeddaApi
-): AuthTokenHandler {
+) {
 
     private val settings: Settings = Settings()
 
-    override val token: String?
-        get() = settings[KEY_TOKEN]
+    suspend fun loadUser(): Boolean {
+        val email: String? = settings[KEY_EMAIL]
+        val password: String? = settings[KEY_PASSWORD]
 
-    init {
-        api.setTokenHandler(this)
+        return if (email != null && password != null) {
+            val result = login(email, password)
+            println(">>> load user result $result")
+            result
+        } else false
     }
 
-    fun loadUser(): String? {
-        println(">>> load ${settings.get<String>(KEY_TOKEN)}")
-        return settings[KEY_TOKEN]
-    }
-
-    override fun onTokenReceived(token: String) {
-        println(">>> save $token")
-        settings[KEY_TOKEN] = token
-    }
-
-    suspend fun login(email: String, password: String) {
-        try {
+    suspend fun login(email: String, password: String): Boolean {
+        return try {
             val userLogin = api.login(email, password)
             println(">>> login success ${userLogin.login}")
+            settings[KEY_EMAIL] = email
+            settings[KEY_PASSWORD] = password
+            true
         } catch (e: Exception) {
             println(">>> login error $e")
+            false
         }
     }
 
     companion object {
-        private const val KEY_TOKEN = "token"
+        private const val KEY_EMAIL = "key_email"
+        private const val KEY_PASSWORD = "key_password"
     }
 }

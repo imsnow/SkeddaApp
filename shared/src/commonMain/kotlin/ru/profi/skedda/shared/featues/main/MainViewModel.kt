@@ -17,7 +17,10 @@ class MainViewModel internal constructor(
         get() = _state
 
     init {
-        val hasUser = userRepository.loadUser() != null
-        _state.value = _state.value.copy(needLogin = !hasUser)
+        viewModelScope.launch {
+            val hasUser = userRepository.loadUser()
+            val type = if (hasUser) LoginType.HAS_USER else LoginType.NEED_LOGIN
+            _state.value = _state.value.copy(type = type)
+        }
     }
 }
