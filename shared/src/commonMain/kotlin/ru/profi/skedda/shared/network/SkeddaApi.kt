@@ -1,6 +1,6 @@
 package ru.profi.skedda.shared.network
 
-import com.soywiz.klock.DateFormat
+import com.soywiz.klock.ISO8601
 import com.soywiz.klock.format
 import io.ktor.client.*
 import io.ktor.client.features.cookies.*
@@ -11,64 +11,53 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import ru.profi.skedda.shared.network.login.LoginPayload
 import ru.profi.skedda.shared.network.login.LoginRequestPayload
-import ru.profi.skedda.shared.repositories.skedda.internal.BookingLists
-import ru.profi.skedda.shared.repositories.skedda.internal.Webs
+import ru.profi.skedda.shared.data.internal.BookingLists
+import ru.profi.skedda.shared.data.internal.Webs
+import ru.profi.skedda.shared.repositories.UserLogin
 import kotlinx.serialization.json.Json as KotlinJson
 
-class SkeddaApi {
-    private val formatter = DateFormat("yyyy-MM-dd'T'HH:mm:ss")
+internal class SkeddaApi(networkClient: NetworkClient) {
 
-    private val client = HttpClient {
-        install(JsonFeature) {
-            serializer = KotlinxSerializer(KotlinJson {
-                ignoreUnknownKeys = true
-            })
-        }
-        install(Logging) {
-            logger = Logger.SIMPLE
-            level = LogLevel.ALL
-        }
-        install(HttpCookies) {
-            storage = AcceptAllCookiesStorage()
-        }
-    }
+    private val formatter = ISO8601.DATETIME_COMPLETE
 
-    private var retrieveToken: String? = null
+    private var token: String? = null
+
+    private val client = networkClient.client
 
     @Throws(Exception::class)
-    suspend fun login(email: String, password: String): Unit {
+    suspend fun login(email: String, password: String): UserLogin {
         val url = Url("${MAIN_HOST}/logins")
         val loginData = LoginRequestPayload(
-            LoginPayload(username = email, password = password)
+            LoginPayload(
+                username = email,
+                password = password,
+                rememberMe = false,
+                arbitraryerrors = null
+            )
         )
-
-        client.post<String>(url) {
+        val user = client.post<UserLogin>(url) {
             contentType(ContentType.Application.Json)
             body = loginData
         }
+
+        return user
     }
 
-    // FIXME: 01.11.2021 подумать о нормальной реализации хранения
     @Throws(Exception::class)
-    private suspend fun retrieveVerificationToken(force: Boolean = false): String {
-        var token = retrieveToken?.takeIf { !force }
+    private suspend fun retrieveVerificationToken(): String {
+        return token ?: requestVerificationToken().also { token = it }
+    }
 
-        if (token !== null) {
-            return token;
-        }
-
+    private suspend fun requestVerificationToken(): String {
         val url = Url("${USER_HOST}/booking")
-        val html = client.get<String>(url);
+        val html = client.get<String>(url)
 
         // FIXME: 01.11.2021 сделать нормальный парсинг
         val pattern = """<input[^>]+name="__RequestVerificationToken"[^>]+value="(.*?)"""".toRegex()
 
         // FIXME: 01.11.2021 сделать нормальную ошибку
-        token = pattern.find(html)?.destructured?.component1() ?: throw Exception("No request verification token in html");
-
-        this.retrieveToken = token
-
-        return token;
+        return pattern.find(html)?.destructured?.component1()
+            ?: throw Exception("No request verification token in html")
     }
 
     @Throws(Exception::class)
@@ -77,20 +66,28 @@ class SkeddaApi {
 
         val url = Url("${USER_HOST}/webs")
         return client.get(url) {
-            header("X-Skedda-RequestVerificationToken", verificationToken)
+            header(KEY_TOKEN_HEADER, verificationToken)
         }
+    }
+
+    suspend fun booking() {
+        val verificationToken = retrieveVerificationToken();
+        val url = Url("${USER_HOST}/booking")
+
+        val result = client.get<String>(url) {
+            header(KEY_TOKEN_HEADER, verificationToken)
+        }
+        println(">>> booking $result")
     }
 
     suspend fun bookingList(start: Long, end: Long): BookingLists {
         val verificationToken = this.retrieveVerificationToken();
         val url = Url("${USER_HOST}/bookingslists")
 
-        val startDate = formatter.format(start)
-
         val bookingList = client.get<BookingLists>(url) {
-            header("X-Skedda-RequestVerificationToken", verificationToken)
+            header(KEY_TOKEN_HEADER, verificationToken)
 
-            parameter("start", startDate)
+            parameter("start", formatter.format(start))
             parameter("end", formatter.format(end))
         }
 
@@ -98,10 +95,11 @@ class SkeddaApi {
     }
 
 
-
     internal companion object {
 
         private const val MAIN_HOST = "https://app.skedda.com"
         private const val USER_HOST = "https://ruwinmike.skedda.com"
+
+        private const val KEY_TOKEN_HEADER = "X-Skedda-RequestVerificationToken"
     }
 }

@@ -1,7 +1,6 @@
 package ru.profi.skedda.shared.featues.login
 
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeSpan
+import com.soywiz.klock.*
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import io.ktor.client.features.*
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -9,13 +8,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.profi.skedda.shared.network.SkeddaApi
+import ru.profi.skedda.shared.repositories.UserRepository
+import ru.profi.skedda.shared.router.Router
 import ru.profi.skedda.shared.validators.EmailValidator
 import ru.profi.skedda.shared.validators.PasswordValidator
 
-class LoginViewModel(
-    private val api: SkeddaApi,
+class LoginViewModel internal constructor(
+    private val userRepository: UserRepository,
     private val emailValidator: EmailValidator,
-    private val passwordValidator: PasswordValidator
+    private val passwordValidator: PasswordValidator,
+    private val router: Router
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginViewState())
@@ -38,17 +40,23 @@ class LoginViewModel(
 
     fun login() {
         viewModelScope.launch(ceh) {
-            api.login(
+            userRepository.login(
                 email = state.value.email,
                 password = state.value.password
             )
+            router.goToSchedule()
 
-            api.webs()
-
-            api.bookingList(
-                start = DateTime.now().minus(DateTimeSpan(days = 7)).unixMillisLong,
-                end = DateTime.now().unixMillisLong,
-            )
+//            val spaces = api.webs()
+//            println(">>> spaces $spaces")
+////            api.booking()
+//
+//            val now = DateTime.now()
+//
+//            val list = api.bookingList(
+//                start = now.unixMillisLong,
+//                end = (now + 1.days).unixMillisLong,
+//            )
+//            println(">>> list $list")
         }
     }
 }
