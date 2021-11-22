@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.getViewModel
 import ru.profi.skedda.shared.featues.schedule.ScheduleViewModel
-import ru.profi.skedda.shared.featues.schedule.Space
+import ru.profi.skedda.shared.repositories.FreeSpace
 
 @Composable
 fun ScheduleScreen() {
@@ -47,7 +47,7 @@ fun ScheduleScreen() {
 }
 
 @Composable
-private fun Spaces(list: List<Space>) {
+private fun Spaces(list: List<FreeSpace>) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = 10.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)

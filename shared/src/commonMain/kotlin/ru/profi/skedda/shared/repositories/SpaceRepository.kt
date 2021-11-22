@@ -1,21 +1,26 @@
 package ru.profi.skedda.shared.repositories
 
-import ru.profi.skedda.shared.data.internal.Webs
-import ru.profi.skedda.shared.featues.schedule.Space
+import com.soywiz.klock.DateTime
+import com.soywiz.klock.days
 import ru.profi.skedda.shared.network.SkeddaApi
 
 class SpaceRepository internal constructor(
     private val api: SkeddaApi
 ) {
 
-    suspend fun loadSpaces(): List<Space> {
+    suspend fun loadSpaces(fromDateTime: Long): List<FreeSpace> {
         val webs = api.webs()
         val spaces = webs.spaces.map { serverSpace ->
             val id = serverSpace.id
             val name = serverSpace.name
-            Space(id, name)
+            FreeSpace(id, name)
         }
-        println(">>> spaces $spaces")
+        val bookingList = api.bookingList(fromDateTime, endDateTime)
+        println(">>> booking $bookingList")
         return spaces
+    }
+
+    companion object {
+        private val endDateTime = (DateTime.now() + 1.days).unixMillisLong
     }
 }
