@@ -17,7 +17,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.getViewModel
-import ru.profi.skedda.android.Chip
+import ru.profi.skedda.android.composables.ui.Chip
+import ru.profi.skedda.android.composables.ui.SpaceView
+import ru.profi.skedda.android.composables.ui.TimeChangerView
 import ru.profi.skedda.shared.data.BookingDuration
 import ru.profi.skedda.shared.featues.schedule.ScheduleViewModel
 import ru.profi.skedda.shared.repositories.FreeSpace
@@ -39,12 +41,9 @@ fun ScheduleScreen() {
             textAlign = TextAlign.Center,
             fontSize = 28.sp
         )
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = state.value.time,
-            textAlign = TextAlign.Center,
-            fontSize = 28.sp
-        )
+        TimeChangerView(text = state.value.time) {
+            viewModel.plusTime()
+        }
         DurationsView(
             list = state.value.durations,
             selectedDuration = state.value.selectedDuration
@@ -86,20 +85,5 @@ private fun Spaces(list: List<FreeSpace>) {
         items(list) { space ->
             SpaceView(name = space.name)
         }
-    }
-}
-
-@Composable
-private fun SpaceView(name: String) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth(),
-        elevation = 4.dp
-    ) {
-        Text(
-            modifier = Modifier.padding(20.dp),
-            text = name,
-            fontSize = 28.sp
-        )
     }
 }

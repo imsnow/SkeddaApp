@@ -1,4 +1,4 @@
-package ru.profi.skedda.android
+package ru.profi.skedda.android.composables.ui
 
 import android.content.res.Resources
 import androidx.compose.foundation.BorderStroke
