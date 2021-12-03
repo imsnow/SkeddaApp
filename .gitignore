@@ -9,3 +9,4 @@
 .externalNativeBuild
 .cxx
 local.properties
+/shared/src/commonMain/kotlin/ru/profi/skedda/shared/featues/login/TestValues.kt
