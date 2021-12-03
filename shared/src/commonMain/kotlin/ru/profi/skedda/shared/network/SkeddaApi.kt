@@ -98,7 +98,7 @@ internal class SkeddaApi(networkClient: NetworkClient) {
     internal companion object {
 
         private const val MAIN_HOST = "https://app.skedda.com"
-        private const val USER_HOST = "https://ruwinmike.skedda.com"
+        private const val USER_HOST = "https://profi.skedda.com"
 
         private const val KEY_TOKEN_HEADER = "X-Skedda-RequestVerificationToken"
     }
