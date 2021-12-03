@@ -11,9 +11,9 @@ data class Booking(
     val start: Long,
     @Serializable(with = SkeddaDateTimeSerializer::class)
     val end: Long,
-    val spaces: List<Int>,
+    val spaces: List<Long>,
     val title: String?,
-    val id: Int,
+    val id: Long,
     val type: Int,
     val recurrenceRule: String?,
 )

@@ -2,6 +2,7 @@ package ru.profi.skedda.shared.featues.schedule
 
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTime
+import com.soywiz.klock.DateTimeTz
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,15 +26,18 @@ class ScheduleViewModel(
     }
 
     init {
-        val now = DateTime.now()
-        val dateString = now.format(dateFormat)
-        val timeString = now.format(timeFormat)
+        val nowLocal = DateTimeTz.nowLocal()
+        val dateString = nowLocal.format(dateFormat)
+        val timeString = nowLocal.format(timeFormat)
         _state.value = state.value.copy(
             date = dateString,
             time = timeString
         )
         viewModelScope.launch(ceh) {
-            val spaces = spaceRepository.loadSpaces(now.unixMillisLong)
+            val spaces = spaceRepository.loadFreeSpacesFrom(
+                fromDateTime = nowLocal.local.unixMillisLong,
+                duration = state.value.duration
+            )
             _state.value = state.value.copy(spaces = spaces)
         }
     }
