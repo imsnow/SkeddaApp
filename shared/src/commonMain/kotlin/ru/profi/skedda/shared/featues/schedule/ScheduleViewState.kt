@@ -6,7 +6,8 @@ import ru.profi.skedda.shared.repositories.FreeSpace
 data class ScheduleViewState(
     val date: String = "",
     val time: String = "",
-    val duration: BookingDuration = BookingDuration.ONE_HOUR,
+    val durations: List<BookingDuration> = BookingDuration.values().toList(),
+    val selectedDuration: BookingDuration = BookingDuration.ONE_HOUR,
     val isLoading: Boolean = true,
     val spaces: List<FreeSpace> = emptyList()
 )

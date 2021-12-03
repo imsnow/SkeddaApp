@@ -1,13 +1,13 @@
 package ru.profi.skedda.shared.featues.schedule
 
 import com.soywiz.klock.DateFormat
-import com.soywiz.klock.DateTime
 import com.soywiz.klock.DateTimeTz
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.profi.skedda.shared.data.BookingDuration
 import ru.profi.skedda.shared.repositories.SpaceRepository
 import ru.profi.skedda.shared.router.Router
 
@@ -26,6 +26,10 @@ class ScheduleViewModel(
     }
 
     init {
+        loadFreeSpaces()
+    }
+
+    private fun loadFreeSpaces() {
         val nowLocal = DateTimeTz.nowLocal()
         val dateString = nowLocal.format(dateFormat)
         val timeString = nowLocal.format(timeFormat)
@@ -36,10 +40,15 @@ class ScheduleViewModel(
         viewModelScope.launch(ceh) {
             val spaces = spaceRepository.loadFreeSpacesFrom(
                 fromDateTime = nowLocal.local.unixMillisLong,
-                duration = state.value.duration
+                duration = state.value.selectedDuration
             )
             _state.value = state.value.copy(spaces = spaces)
         }
+    }
+
+    fun selectDuration(duration: BookingDuration) {
+        _state.value = state.value.copy(selectedDuration = duration)
+        loadFreeSpaces()
     }
 
     companion object {
