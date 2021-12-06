@@ -15,4 +15,9 @@ sealed class Screen {
     object Login : Screen() {
         override val route = "login"
     }
+
+    object Booking : Screen() {
+        override val route: String
+            get() = "booking"
+    }
 }

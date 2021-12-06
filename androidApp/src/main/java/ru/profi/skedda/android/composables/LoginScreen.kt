@@ -13,7 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.getViewModel
+import ru.profi.skedda.shared.di.HH
+import ru.profi.skedda.shared.events.EventsDispatcher
 import ru.profi.skedda.shared.featues.login.LoginViewModel
 
 @Composable
@@ -32,20 +35,24 @@ fun LoginScreen() {
         )
         TextField(
             modifier = Modifier
-                .fillMaxWidth().padding(16.dp),
+                .fillMaxWidth()
+                .padding(16.dp),
             value = state.value.email,
             onValueChange = { viewModel.emailChange(it) }
         )
         TextField(
             modifier = Modifier
-                .fillMaxWidth().padding(16.dp),
+                .fillMaxWidth()
+                .padding(16.dp),
             visualTransformation = PasswordVisualTransformation(),
             value = state.value.password,
             onValueChange = { viewModel.onPasswordChanged(it) }
         )
         Spacer(modifier = Modifier.height(8.dp))
         Button(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             enabled = state.value.isActiveButton,
             onClick = { viewModel.login() }
         ) {

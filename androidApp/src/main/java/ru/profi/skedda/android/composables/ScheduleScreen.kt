@@ -50,7 +50,9 @@ fun ScheduleScreen() {
         ) { bookingDuration ->
             viewModel.selectDuration(bookingDuration)
         }
-        Spaces(list = state.value.spaces)
+        Spaces(list = state.value.spaces) { id ->
+            viewModel.onSpaceClicked(id)
+        }
     }
 }
 
@@ -77,13 +79,13 @@ private fun DurationsView(
 }
 
 @Composable
-private fun Spaces(list: List<FreeSpace>) {
+private fun Spaces(list: List<FreeSpace>, onSpaceClick: (Long) -> Unit) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = 10.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(list) { space ->
-            SpaceView(name = space.name)
+            SpaceView(id = space.id, name = space.name, onClick = onSpaceClick)
         }
     }
 }

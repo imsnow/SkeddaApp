@@ -3,7 +3,6 @@ package ru.profi.skedda.shared.featues.schedule
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.DateTimeTz
-import com.soywiz.klock.TimeSpan
 import com.soywiz.klock.minutes
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -43,7 +42,6 @@ class ScheduleViewModel(
     private fun loadFreeSpaces() {
         val nowLocal = DateTimeTz.nowLocal()
         val round = nowLocal.local.round()
-        println(">>>> round ${round.unixMillisLong} not ${nowLocal.local.unixMillisLong}")
 
         val dateString = round.format(dateFormat)
         val timeString = round.format(timeFormat)
@@ -63,6 +61,10 @@ class ScheduleViewModel(
     fun selectDuration(duration: BookingDuration) {
         _state.value = state.value.copy(selectedDuration = duration)
         loadFreeSpaces()
+    }
+
+    fun onSpaceClicked(id: Long) {
+        router.showBooking(id = id)
     }
 
     fun plusTime() {

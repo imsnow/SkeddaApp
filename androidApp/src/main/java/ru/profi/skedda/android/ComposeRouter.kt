@@ -12,11 +12,15 @@ import androidx.navigation.compose.rememberNavController
 import ru.profi.skedda.android.composables.LoginScreen
 import ru.profi.skedda.android.composables.MainScreen
 import ru.profi.skedda.android.composables.ScheduleScreen
+import ru.profi.skedda.shared.events.Event
+import ru.profi.skedda.shared.events.EventHandler
+import ru.profi.skedda.shared.events.EventsDispatcher
+import ru.profi.skedda.shared.events.MainEvent
 import ru.profi.skedda.shared.router.Router
 import ru.profi.skedda.shared.router.Screen
 
 @ExperimentalMaterialApi
-class ComposeRouter : Router {
+class ComposeRouter(private val eventHandler: EventHandler) : Router, EventsDispatcher {
 
     private lateinit var navController: NavController
 
@@ -43,5 +47,14 @@ class ComposeRouter : Router {
 
     override fun goToLogin() {
         navController.navigate(Screen.Login.route)
+    }
+
+    override fun showBooking(id: Long) {
+//        navController.navigate(Screen.Booking.route)
+        eventHandler.handleEvent(event = MainEvent.ShowBooking)
+    }
+
+    override fun dispatchEvent(event: Event) {
+        eventHandler.handleEvent(event = event)
     }
 }

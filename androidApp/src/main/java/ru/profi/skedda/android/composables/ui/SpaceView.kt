@@ -1,5 +1,6 @@
 package ru.profi.skedda.android.composables.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
@@ -10,10 +11,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun SpaceView(name: String) {
+fun SpaceView(id: Long, name: String, onClick: (Long) -> Unit) {
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth().clickable { onClick.invoke(id) },
         elevation = 4.dp
     ) {
         Text(
