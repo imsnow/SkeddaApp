@@ -6,8 +6,6 @@ import io.ktor.client.features.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
-import ru.profi.skedda.shared.network.SkeddaApi
 import ru.profi.skedda.shared.repositories.UserRepository
 import ru.profi.skedda.shared.router.Router
 import ru.profi.skedda.shared.validators.EmailValidator
@@ -39,24 +37,13 @@ class LoginViewModel internal constructor(
     }
 
     fun login() {
-        viewModelScope.launch(ceh) {
-            userRepository.login(
-                email = state.value.email,
-                password = state.value.password
-            )
-            router.goToSchedule()
-
-//            val spaces = api.webs()
-//            println(">>> spaces $spaces")
-////            api.booking()
-//
-//            val now = DateTime.now()
-//
-//            val list = api.bookingList(
-//                start = now.unixMillisLong,
-//                end = (now + 1.days).unixMillisLong,
+        router.showBooking(2)
+//        viewModelScope.launch(ceh) {
+//            userRepository.login(
+//                email = state.value.email,
+//                password = state.value.password
 //            )
-//            println(">>> list $list")
-        }
+//            router.goToSchedule()
+//        }
     }
 }

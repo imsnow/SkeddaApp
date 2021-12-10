@@ -1,7 +1,5 @@
 package ru.profi.skedda.shared.router
 
-import ru.profi.skedda.shared.events.EventsDispatcher
-
 interface Router {
 
     val initScreen: Screen

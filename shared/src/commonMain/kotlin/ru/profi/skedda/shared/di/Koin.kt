@@ -1,13 +1,14 @@
 package ru.profi.skedda.shared.di
 
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import org.koin.core.context.startKoin
+import org.koin.core.definition.Definition
+import org.koin.core.instance.InstanceFactory
+import org.koin.core.module.Module
+import org.koin.core.qualifier.Qualifier
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import ru.profi.skedda.shared.events.Event
-import ru.profi.skedda.shared.events.EventHandler
-import ru.profi.skedda.shared.events.EventsDispatcher
-import ru.profi.skedda.shared.events.MainEvent
 import ru.profi.skedda.shared.featues.login.LoginViewModel
 import ru.profi.skedda.shared.featues.main.MainViewModel
 import ru.profi.skedda.shared.featues.schedule.ScheduleViewModel
@@ -40,15 +41,14 @@ fun networkModule() = module {
 }
 
 fun viewModules() = module {
-    factory { LoginViewModel(get(), get(), get(), get()) }
-    factory { ScheduleViewModel(get(), get()) }
-    factory { MainViewModel(get()) } bind EventHandler::class
+    viewModel { LoginViewModel(get(), get(), get(), get()) }
+    viewModel { ScheduleViewModel(get(), get()) }
+    viewModel { MainViewModel(get()) }
 }
 
-class HH(private val eventHandler: EventHandler): EventsDispatcher {
-
-
-    override fun dispatchEvent(event: Event) {
-        eventHandler.handleEvent(MainEvent.ShowBooking)
-    }
+inline fun <reified T : ViewModel> Module.viewModel(
+    qualifier: Qualifier? = null,
+    noinline definition: Definition<T>
+): Pair<Module, InstanceFactory<T>> {
+    return factory(qualifier, definition)
 }

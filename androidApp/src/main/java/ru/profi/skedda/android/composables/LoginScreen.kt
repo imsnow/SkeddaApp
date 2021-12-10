@@ -15,14 +15,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.getViewModel
-import ru.profi.skedda.shared.di.HH
-import ru.profi.skedda.shared.events.EventsDispatcher
 import ru.profi.skedda.shared.featues.login.LoginViewModel
 
 @Composable
 fun LoginScreen() {
     val viewModel: LoginViewModel = getViewModel()
     val state = viewModel.state.collectAsState()
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

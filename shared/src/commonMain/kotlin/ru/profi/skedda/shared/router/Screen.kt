@@ -8,7 +8,7 @@ sealed class Screen {
         override val route = "main"
     }
 
-    object Schedule: Screen() {
+    object Schedule : Screen() {
         override val route = "schedule"
     }
 
@@ -18,6 +18,8 @@ sealed class Screen {
 
     object Booking : Screen() {
         override val route: String
-            get() = "booking"
+            get() = "booking/{id}"
+
+        fun routeTo(id: Long) = "booking/$id"
     }
 }
