@@ -10,10 +10,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.profi.skedda.shared.data.BookingDuration
+import ru.profi.skedda.shared.network.SkeddaApi
 import ru.profi.skedda.shared.repositories.SpaceRepository
+import ru.profi.skedda.shared.repositories.UserRepository
 import ru.profi.skedda.shared.router.Router
 
-class ScheduleViewModel(
+class ScheduleViewModel internal constructor(
+    private val userRepository: UserRepository,
     private val spaceRepository: SpaceRepository,
     private val router: Router
 ) : ViewModel() {
@@ -64,7 +67,18 @@ class ScheduleViewModel(
     }
 
     fun onSpaceClicked(id: Long) {
-        router.showBooking(id = id)
+        viewModelScope.launch {
+
+            val userId = 438910
+
+            val nowLocal = DateTimeTz.nowLocal()
+            val round = nowLocal.local.round()
+
+            val start = round.unixMillisLong
+            val end = start + state.value.selectedDuration.millis
+            spaceRepository.book(userId, id, start, end)
+        }
+//        router.showBooking(id = id)
     }
 
     fun plusTime() {

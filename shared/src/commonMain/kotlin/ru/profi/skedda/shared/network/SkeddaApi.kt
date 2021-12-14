@@ -13,6 +13,9 @@ import ru.profi.skedda.shared.network.login.LoginPayload
 import ru.profi.skedda.shared.network.login.LoginRequestPayload
 import ru.profi.skedda.shared.data.internal.BookingLists
 import ru.profi.skedda.shared.data.internal.Webs
+import ru.profi.skedda.shared.network.booking.Booking
+import ru.profi.skedda.shared.network.booking.BookingPayload
+import ru.profi.skedda.shared.repositories.User
 import ru.profi.skedda.shared.repositories.UserLogin
 import kotlinx.serialization.json.Json as KotlinJson
 
@@ -70,12 +73,21 @@ internal class SkeddaApi(networkClient: NetworkClient) {
         }
     }
 
-    suspend fun booking() {
+    suspend fun booking(userId: Int, id: Long, start: Long, end: Long) {
         val verificationToken = retrieveVerificationToken();
-        val url = Url("${USER_HOST}/booking")
+        val url = Url("${USER_HOST}/bookings")
 
-        val result = client.get<String>(url) {
+        val booking = Booking(
+            venueuser = userId,
+            spaces = listOf(id),
+            start = formatter.format(start),
+            end = formatter.format(end)
+        )
+
+        val result = client.post<String>(url) {
+            contentType(ContentType.Application.Json)
             header(KEY_TOKEN_HEADER, verificationToken)
+            body = BookingPayload(booking)
         }
         println(">>> booking $result")
     }
@@ -98,7 +110,7 @@ internal class SkeddaApi(networkClient: NetworkClient) {
     internal companion object {
 
         private const val MAIN_HOST = "https://app.skedda.com"
-        private const val USER_HOST = "https://profi.skedda.com"
+        private const val USER_HOST = "https://profi.skedda.com" //"https://ruwinmike.skedda.com"
 
         private const val KEY_TOKEN_HEADER = "X-Skedda-RequestVerificationToken"
     }

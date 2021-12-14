@@ -13,6 +13,9 @@ internal class NetworkClient {
         install(JsonFeature) {
             serializer = KotlinxSerializer(KoltinJson {
                 ignoreUnknownKeys = true
+                isLenient = true
+                coerceInputValues = true
+                encodeDefaults = true
             })
         }
         install(Logging) {

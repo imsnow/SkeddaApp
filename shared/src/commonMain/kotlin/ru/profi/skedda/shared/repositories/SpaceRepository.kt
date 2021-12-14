@@ -61,6 +61,11 @@ class SpaceRepository internal constructor(
         }
     }
 
+    suspend fun book(userId: Int, id: Long, start: Long, end: Long) {
+        val result = api.booking(userId, id, start, end)
+        println(">>> book $result")
+    }
+
     companion object {
         private val endDateTime = (DateTime.now() + 1.days).unixMillisLong
     }

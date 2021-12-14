@@ -42,7 +42,7 @@ fun networkModule() = module {
 
 fun viewModules() = module {
     viewModel { LoginViewModel(get(), get(), get(), get()) }
-    viewModel { ScheduleViewModel(get(), get()) }
+    viewModel { ScheduleViewModel(get(), get(), get()) }
     viewModel { MainViewModel(get()) }
 }
 
