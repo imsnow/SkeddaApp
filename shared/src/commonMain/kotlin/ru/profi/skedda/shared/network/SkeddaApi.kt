@@ -11,7 +11,7 @@ import ru.profi.skedda.shared.data.internal.Venue
 import ru.profi.skedda.shared.data.internal.Webs
 import ru.profi.skedda.shared.network.booking.Booking
 import ru.profi.skedda.shared.network.booking.BookingPayload
-import ru.profi.skedda.shared.data.repositories.UserLogin
+import ru.profi.skedda.shared.data.UserLogin
 
 internal class SkeddaApi(networkClient: NetworkClient) {
 

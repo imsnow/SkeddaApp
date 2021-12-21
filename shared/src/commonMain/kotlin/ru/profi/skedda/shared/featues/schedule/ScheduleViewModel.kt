@@ -10,11 +10,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.profi.skedda.shared.data.BookingDuration
-import ru.profi.skedda.shared.data.repositories.SpaceRepository
 import ru.profi.skedda.shared.router.Router
+import ru.profi.skedda.shared.usecases.LoadFreeSpacesUseCase
 
 class ScheduleViewModel internal constructor(
-    private val spaceRepository: SpaceRepository,
+    private val loadFreeSpacesUseCase: LoadFreeSpacesUseCase,
     private val router: Router
 ) : ViewModel() {
 
@@ -50,7 +50,7 @@ class ScheduleViewModel internal constructor(
             time = timeString
         )
         viewModelScope.launch(ceh) {
-            val spaces = spaceRepository.loadFreeSpacesFrom(
+            val spaces = loadFreeSpacesUseCase.loadFrom(
                 fromDateTime = round.unixMillisLong,
                 duration = state.value.selectedDuration
             )
@@ -64,16 +64,16 @@ class ScheduleViewModel internal constructor(
     }
 
     fun onSpaceClicked(id: Long) {
-        viewModelScope.launch {
-
-            val nowLocal = DateTimeTz.nowLocal()
-            val round = nowLocal.local.round()
-
-            val start = round.unixMillisLong
-            val end = start + state.value.selectedDuration.millis
-            spaceRepository.book(id, start, end)
-        }
-//        router.showBooking(id = id)
+//        viewModelScope.launch {
+//
+//            val nowLocal = DateTimeTz.nowLocal()
+//            val round = nowLocal.local.round()
+//
+//            val start = round.unixMillisLong
+//            val end = start + state.value.selectedDuration.millis
+//            spaceRepository.book(id, start, end)
+//        }
+        router.showBooking(id = id)
     }
 
     fun plusTime() {
@@ -88,7 +88,7 @@ class ScheduleViewModel internal constructor(
             time = timeString
         )
         viewModelScope.launch(ceh) {
-            val spaces = spaceRepository.loadFreeSpacesFrom(
+            val spaces = loadFreeSpacesUseCase.loadFrom(
                 fromDateTime = newTime.unixMillisLong,
                 duration = state.value.selectedDuration
             )

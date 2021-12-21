@@ -21,7 +21,7 @@ import ru.profi.skedda.android.composables.ui.SpaceView
 import ru.profi.skedda.android.composables.ui.TimeChangerView
 import ru.profi.skedda.shared.data.BookingDuration
 import ru.profi.skedda.shared.featues.schedule.ScheduleViewModel
-import ru.profi.skedda.shared.data.repositories.FreeSpace
+import ru.profi.skedda.shared.data.FreeSpace
 
 @Composable
 fun ScheduleScreen() {

@@ -1,29 +1,29 @@
-package ru.profi.skedda.shared.data.repositories
+package ru.profi.skedda.shared.usecases
 
-import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
+import ru.profi.skedda.shared.Storage
 import ru.profi.skedda.shared.data.BookingDuration
 import ru.profi.skedda.shared.data.internal.Space
-import ru.profi.skedda.shared.data.internal.Venue
+import ru.profi.skedda.shared.data.FreeSpace
 import ru.profi.skedda.shared.network.SkeddaApi
 
-class SpaceRepository internal constructor(
-    private val api: SkeddaApi
+class LoadFreeSpacesUseCase internal constructor(
+    private val api: SkeddaApi,
+    private val storage: Storage
 ) {
 
-    private var cacheVenue: Venue? = null
-    private val cacheSpaces = mutableListOf<Space>()
-
-    suspend fun loadFreeSpacesFrom(
+    suspend fun loadFrom(
         fromDateTime: Long,
         duration: BookingDuration
     ): List<FreeSpace> {
         val spaces = loadSpaces()
+
+        val endDateTime = fromDateTime + 1.days.millisecondsLong
         val bookingList = api.bookingList(fromDateTime, endDateTime)
 
         val durationEnd = fromDateTime + duration.millis
 
-        data class BookingStart(val id: Long, val start: Long)
+        class BookingStart(val id: Long, val start: Long)
 
         val bookings = bookingList.bookings.map {
             val id = it.spaces.first()
@@ -45,28 +45,17 @@ class SpaceRepository internal constructor(
     }
 
     private suspend fun loadSpaces(): List<Space> {
-        return if (cacheSpaces.isNotEmpty()) {
-            cacheSpaces
-        } else {
-            val webs = api.webs()
-            cacheSpaces.clear()
-            cacheSpaces.addAll(webs.spaces)
-
-            cacheVenue = webs.venue
-
-            cacheSpaces
+        val cacheSpaces = storage.loadSpaces()
+        if (cacheSpaces.isNotEmpty()) {
+            loadWebsAndCache()
         }
+        return storage.loadSpaces()
     }
 
-    suspend fun loadVenue(): Venue = cacheVenue ?: throw IllegalStateException("No venue")
-
-    suspend fun book(id: Long, start: Long, end: Long) {
-        val venue = loadVenue()
-        val result = api.booking(venue, id, start, end)
-        println(">>> book $result")
-    }
-
-    companion object {
-        private val endDateTime = (DateTime.now() + 1.days).unixMillisLong
+    private suspend fun loadWebsAndCache() {
+        val webs = api.webs()
+        println(">>> load webs success $webs")
+        storage.saveSpaces(webs.spaces)
+        storage.saveVenue(webs.venue)
     }
 }
