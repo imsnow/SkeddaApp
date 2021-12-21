@@ -69,14 +69,12 @@ class ScheduleViewModel internal constructor(
     fun onSpaceClicked(id: Long) {
         viewModelScope.launch {
 
-            val userId = 438910
-
             val nowLocal = DateTimeTz.nowLocal()
             val round = nowLocal.local.round()
 
             val start = round.unixMillisLong
             val end = start + state.value.selectedDuration.millis
-            spaceRepository.book(userId, id, start, end)
+            spaceRepository.book(id, start, end)
         }
 //        router.showBooking(id = id)
     }

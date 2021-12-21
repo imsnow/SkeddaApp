@@ -4,13 +4,14 @@ import com.soywiz.klock.DateTime
 import com.soywiz.klock.days
 import ru.profi.skedda.shared.data.BookingDuration
 import ru.profi.skedda.shared.data.internal.Space
-import ru.profi.skedda.shared.data.internal.Webs
+import ru.profi.skedda.shared.data.internal.Venue
 import ru.profi.skedda.shared.network.SkeddaApi
 
 class SpaceRepository internal constructor(
     private val api: SkeddaApi
 ) {
 
+    private var cacheVenue: Venue? = null
     private val cacheSpaces = mutableListOf<Space>()
 
     suspend fun loadFreeSpacesFrom(
@@ -21,7 +22,6 @@ class SpaceRepository internal constructor(
         val bookingList = api.bookingList(fromDateTime, endDateTime)
 
         val durationEnd = fromDateTime + duration.millis
-        println(">>> duration end $durationEnd")
 
         data class BookingStart(val id: Long, val start: Long)
 
@@ -33,20 +33,14 @@ class SpaceRepository internal constructor(
         val freeSpaces = spaces.mapNotNull { serverSpace ->
             val id = serverSpace.id
             val findBooking = bookings.find { it.id == id }
-            println(">>> booking $findBooking")
+
             if (findBooking != null && findBooking.start < durationEnd) {
                 null
             } else {
                 val name = serverSpace.name
                 FreeSpace(id, name)
             }
-//            if (find.start >= durationEnd) {
-//                val name = serverSpace.name
-//                FreeSpace(id, name)
-//            } else null
         }
-
-//        println(">>> booking $bookingList")
         return freeSpaces
     }
 
@@ -57,12 +51,18 @@ class SpaceRepository internal constructor(
             val webs = api.webs()
             cacheSpaces.clear()
             cacheSpaces.addAll(webs.spaces)
+
+            cacheVenue = webs.venue
+
             cacheSpaces
         }
     }
 
-    suspend fun book(userId: Int, id: Long, start: Long, end: Long) {
-        val result = api.booking(userId, id, start, end)
+    suspend fun loadVenue(): Venue = cacheVenue ?: throw IllegalStateException("No venue")
+
+    suspend fun book(id: Long, start: Long, end: Long) {
+        val venue = loadVenue()
+        val result = api.booking(venue, id, start, end)
         println(">>> book $result")
     }
 

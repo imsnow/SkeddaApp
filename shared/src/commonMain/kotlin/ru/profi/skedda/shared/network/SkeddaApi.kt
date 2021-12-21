@@ -12,6 +12,7 @@ import io.ktor.http.*
 import ru.profi.skedda.shared.network.login.LoginPayload
 import ru.profi.skedda.shared.network.login.LoginRequestPayload
 import ru.profi.skedda.shared.data.internal.BookingLists
+import ru.profi.skedda.shared.data.internal.Venue
 import ru.profi.skedda.shared.data.internal.Webs
 import ru.profi.skedda.shared.network.booking.Booking
 import ru.profi.skedda.shared.network.booking.BookingPayload
@@ -73,12 +74,12 @@ internal class SkeddaApi(networkClient: NetworkClient) {
         }
     }
 
-    suspend fun booking(userId: Int, id: Long, start: Long, end: Long) {
+    suspend fun booking(venue: Venue, id: Long, start: Long, end: Long) {
         val verificationToken = retrieveVerificationToken();
         val url = Url("${USER_HOST}/bookings")
 
         val booking = Booking(
-            venueuser = userId,
+            venue = venue,
             spaces = listOf(id),
             start = formatter.format(start),
             end = formatter.format(end)
