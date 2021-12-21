@@ -46,7 +46,7 @@ class LoadFreeSpacesUseCase internal constructor(
 
     private suspend fun loadSpaces(): List<Space> {
         val cacheSpaces = storage.loadSpaces()
-        if (cacheSpaces.isNotEmpty()) {
+        if (cacheSpaces.isEmpty()) {
             loadWebsAndCache()
         }
         return storage.loadSpaces()
