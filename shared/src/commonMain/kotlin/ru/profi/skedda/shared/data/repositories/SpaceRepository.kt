@@ -1,4 +1,4 @@
-package ru.profi.skedda.shared.repositories
+package ru.profi.skedda.shared.data.repositories
 
 import com.soywiz.klock.DateTime
 import com.soywiz.klock.days

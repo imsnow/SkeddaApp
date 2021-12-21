@@ -2,11 +2,6 @@ package ru.profi.skedda.shared.network
 
 import com.soywiz.klock.ISO8601
 import com.soywiz.klock.format
-import io.ktor.client.*
-import io.ktor.client.features.cookies.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import ru.profi.skedda.shared.network.login.LoginPayload
@@ -16,9 +11,7 @@ import ru.profi.skedda.shared.data.internal.Venue
 import ru.profi.skedda.shared.data.internal.Webs
 import ru.profi.skedda.shared.network.booking.Booking
 import ru.profi.skedda.shared.network.booking.BookingPayload
-import ru.profi.skedda.shared.repositories.User
-import ru.profi.skedda.shared.repositories.UserLogin
-import kotlinx.serialization.json.Json as KotlinJson
+import ru.profi.skedda.shared.data.repositories.UserLogin
 
 internal class SkeddaApi(networkClient: NetworkClient) {
 

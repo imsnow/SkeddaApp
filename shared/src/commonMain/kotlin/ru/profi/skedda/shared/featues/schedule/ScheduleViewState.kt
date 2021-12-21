@@ -1,7 +1,7 @@
 package ru.profi.skedda.shared.featues.schedule
 
 import ru.profi.skedda.shared.data.BookingDuration
-import ru.profi.skedda.shared.repositories.FreeSpace
+import ru.profi.skedda.shared.data.repositories.FreeSpace
 
 data class ScheduleViewState(
     val date: String = "",

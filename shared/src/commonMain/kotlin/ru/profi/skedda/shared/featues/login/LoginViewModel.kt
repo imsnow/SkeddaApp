@@ -1,19 +1,17 @@
 package ru.profi.skedda.shared.featues.login
 
-import com.soywiz.klock.*
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import io.ktor.client.features.*
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import ru.profi.skedda.shared.repositories.UserRepository
 import ru.profi.skedda.shared.router.Router
+import ru.profi.skedda.shared.usecases.LoginUseCase
 import ru.profi.skedda.shared.validators.EmailValidator
 import ru.profi.skedda.shared.validators.PasswordValidator
 
 class LoginViewModel internal constructor(
-    private val userRepository: UserRepository,
+    private val loginUseCase: LoginUseCase,
     private val emailValidator: EmailValidator,
     private val passwordValidator: PasswordValidator,
     private val router: Router
@@ -39,7 +37,7 @@ class LoginViewModel internal constructor(
 
     fun login() {
         viewModelScope.launch(ceh) {
-            userRepository.login(
+            loginUseCase.login(
                 email = state.value.email,
                 password = state.value.password
             )

@@ -10,13 +10,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.profi.skedda.shared.data.BookingDuration
-import ru.profi.skedda.shared.network.SkeddaApi
-import ru.profi.skedda.shared.repositories.SpaceRepository
-import ru.profi.skedda.shared.repositories.UserRepository
+import ru.profi.skedda.shared.data.repositories.SpaceRepository
 import ru.profi.skedda.shared.router.Router
 
 class ScheduleViewModel internal constructor(
-    private val userRepository: UserRepository,
     private val spaceRepository: SpaceRepository,
     private val router: Router
 ) : ViewModel() {

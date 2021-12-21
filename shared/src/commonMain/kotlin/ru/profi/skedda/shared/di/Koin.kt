@@ -7,22 +7,23 @@ import org.koin.core.instance.InstanceFactory
 import org.koin.core.module.Module
 import org.koin.core.qualifier.Qualifier
 import org.koin.dsl.KoinAppDeclaration
-import org.koin.dsl.bind
 import org.koin.dsl.module
+import ru.profi.skedda.shared.Storage
 import ru.profi.skedda.shared.featues.login.LoginViewModel
 import ru.profi.skedda.shared.featues.main.MainViewModel
 import ru.profi.skedda.shared.featues.schedule.ScheduleViewModel
 import ru.profi.skedda.shared.network.NetworkClient
 import ru.profi.skedda.shared.network.SkeddaApi
-import ru.profi.skedda.shared.repositories.SpaceRepository
-import ru.profi.skedda.shared.repositories.UserRepository
+import ru.profi.skedda.shared.data.repositories.SpaceRepository
+import ru.profi.skedda.shared.usecases.CheckHasUserUseCase
+import ru.profi.skedda.shared.usecases.LoginUseCase
 import ru.profi.skedda.shared.validators.EmailValidator
 import ru.profi.skedda.shared.validators.PasswordValidator
 
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
         appDeclaration()
-        modules(commonModules(), networkModule(), viewModules())
+        modules(commonModules(), networkModule(), useCases(), viewModules())
     }
 
 // for iOS
@@ -31,7 +32,7 @@ fun initKoin() = initKoin {}
 fun commonModules() = module {
     single { EmailValidator }
     single { PasswordValidator }
-    single { UserRepository(get()) }
+    single { Storage() }
     single { SpaceRepository(get()) }
 }
 
@@ -42,8 +43,13 @@ fun networkModule() = module {
 
 fun viewModules() = module {
     viewModel { LoginViewModel(get(), get(), get(), get()) }
-    viewModel { ScheduleViewModel(get(), get(), get()) }
-    viewModel { MainViewModel(get()) }
+    viewModel { ScheduleViewModel(get(), get()) }
+    viewModel { MainViewModel(get(), get()) }
+}
+
+fun useCases() = module {
+    single { CheckHasUserUseCase(get(), get()) }
+    single { LoginUseCase(get(), get()) }
 }
 
 inline fun <reified T : ViewModel> Module.viewModel(
