@@ -19,6 +19,9 @@ import ru.profi.skedda.android.composables.BottomSheetScreen
 import ru.profi.skedda.android.composables.LoginScreen
 import ru.profi.skedda.android.composables.MainScreen
 import ru.profi.skedda.android.composables.ScheduleScreen
+import ru.profi.skedda.shared.data.BookingDuration
+import ru.profi.skedda.shared.data.BookingDuration.Companion.fromMillis
+import ru.profi.skedda.shared.featues.booking.BookingContext
 import ru.profi.skedda.shared.router.Router
 import ru.profi.skedda.shared.router.Screen
 
@@ -53,7 +56,14 @@ class ComposeRouter() : Router {
                 composable(Screen.Schedule.route) { ScheduleScreen() }
                 composable(Screen.Booking.route) { backStackEntry ->
                     val id = backStackEntry.arguments?.getString("id")
-                    BookingScreen(id = id?.toLong() ?:0)
+                    val from = backStackEntry.arguments?.getString("from")
+                    val duration = backStackEntry.arguments?.getString("duration")
+                    val context = BookingContext(
+                        spaceId = id!!.toLong(),
+                        from = from!!.toLong(),
+                        duration = duration!!.fromMillis()
+                    )
+                    BookingScreen(context = context)
                 }
             }
             this.navController = navController
@@ -69,10 +79,7 @@ class ComposeRouter() : Router {
         navController.navigate(Screen.Login.route)
     }
 
-    override fun showBooking(id: Long) {
-        navController.navigate(Screen.Booking.routeTo(id))
-//        coroutineScope.launch {
-//            bottomSheetState.bottomSheetState.expand()
-//        }
+    override fun showBooking(id: Long, from: Long, duration: BookingDuration) {
+        navController.navigate(Screen.Booking.routeTo(id, from, duration))
     }
 }

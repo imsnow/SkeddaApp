@@ -47,7 +47,7 @@ fun viewModules() = module {
     viewModel { LoginViewModel(get(), get(), get(), get()) }
     viewModel { ScheduleViewModel(get(), get()) }
     viewModel { MainViewModel(get(), get()) }
-    viewModel { BookingViewModel(get(), get()) }
+    viewModel { BookingViewModel(get(), get() ,get()) }
 }
 
 fun useCases() = module {

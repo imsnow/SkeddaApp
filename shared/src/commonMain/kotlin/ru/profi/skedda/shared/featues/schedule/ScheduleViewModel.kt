@@ -54,7 +54,10 @@ class ScheduleViewModel internal constructor(
                 fromDateTime = round.unixMillisLong,
                 duration = state.value.selectedDuration
             )
-            _state.value = state.value.copy(spaces = spaces)
+            _state.value = state.value.copy(
+                spaces = spaces,
+                selectedFrom = round.unixMillisLong
+            )
         }
     }
 
@@ -73,7 +76,11 @@ class ScheduleViewModel internal constructor(
 //            val end = start + state.value.selectedDuration.millis
 //            spaceRepository.book(id, start, end)
 //        }
-        router.showBooking(id = id)
+        router.showBooking(
+            id = id,
+            from = state.value.selectedFrom,
+            duration = state.value.selectedDuration
+        )
     }
 
     fun plusTime() {

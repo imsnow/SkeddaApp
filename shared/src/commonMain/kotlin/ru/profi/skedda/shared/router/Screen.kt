@@ -1,5 +1,7 @@
 package ru.profi.skedda.shared.router
 
+import ru.profi.skedda.shared.data.BookingDuration
+
 sealed class Screen {
 
     abstract val route: String
@@ -18,8 +20,12 @@ sealed class Screen {
 
     object Booking : Screen() {
         override val route: String
-            get() = "booking/{id}"
+            get() = "booking/{id}/{from}/{duration}"
 
-        fun routeTo(id: Long) = "booking/$id"
+        fun routeTo(
+            id: Long,
+            from: Long,
+            duration: BookingDuration
+        ) = "booking/$id/$from/$duration"
     }
 }
