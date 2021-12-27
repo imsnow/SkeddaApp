@@ -3,6 +3,8 @@ package ru.profi.skedda.android.composables
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -48,11 +50,21 @@ fun BookingScreen(context: BookingContext) {
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(8.dp),
             enabled = state.value.isSpaceLoaded,
             onClick = { viewModel.goBook() }
         ) {
             Text(text = "Забронировать")
+        }
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.background),
+            enabled = state.value.isSpaceLoaded,
+            onClick = { viewModel.cancel() }
+        ) {
+            Text(text = "Отмена")
         }
     }
 }

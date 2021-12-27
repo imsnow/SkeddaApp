@@ -39,6 +39,9 @@ class BookingViewModel internal constructor(
 
     fun goBook() {
         println(">>> go book")
+    }
+
+    fun cancel() {
         router.goToSchedule()
     }
 
