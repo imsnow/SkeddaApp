@@ -37,7 +37,7 @@ fun MainScreen(
     BottomSheetScaffold(
         sheetContent = sheetContent,
         scaffoldState = bottomSheetState,
-        sheetPeekHeight = 56.dp
+        sheetPeekHeight = 0.dp // TODO may be will need
     ) {
         when (state.value.type) {
             LoginType.NEED_LOGIN -> LoginScreen()
@@ -45,15 +45,4 @@ fun MainScreen(
             LoginType.PREPARING -> Unit
         }
     }
-
-//    SideEffect {
-//        println(">>> state changed ${state.value.bottomSheetExpanded}")
-//        coroutineScope.launch {
-//            if (state.value.bottomSheetExpanded) {
-//                bottomSheetState.bottomSheetState.expand()
-//            } else {
-//                bottomSheetState.bottomSheetState.collapse()
-//            }
-//        }
-//    }
 }

@@ -16,9 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.getViewModel
-import ru.profi.skedda.android.composables.ui.Chip
-import ru.profi.skedda.android.composables.ui.SpaceView
-import ru.profi.skedda.android.composables.ui.TimeChangerView
+import ru.profi.skedda.android.composables.ui.*
 import ru.profi.skedda.shared.data.BookingDuration
 import ru.profi.skedda.shared.featues.schedule.ScheduleViewModel
 import ru.profi.skedda.shared.data.FreeSpace
@@ -32,14 +30,9 @@ fun ScheduleScreen() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(25.dp)
     ) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = state.value.date,
-            textAlign = TextAlign.Center,
-            fontSize = 28.sp
-        )
+        TitleText(text = state.value.date)
         TimeChangerView(text = state.value.time) {
             viewModel.plusTime()
         }
@@ -66,10 +59,10 @@ private fun DurationsView(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(list) { item ->
-            Chip(
+            DsTag(
                 text = item.title,
                 isSelected = item == selectedDuration,
-                onChipClicked = {
+                onTagClicked = {
                     onSelectDuration.invoke(item)
                 }
             )

@@ -13,6 +13,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.getViewModel
+import ru.profi.skedda.android.composables.ui.Color
+import ru.profi.skedda.android.composables.ui.DsButton
+import ru.profi.skedda.android.composables.ui.HeadlineText
+import ru.profi.skedda.android.composables.ui.TitleText
 import ru.profi.skedda.shared.featues.booking.BookingContext
 import ru.profi.skedda.shared.featues.booking.BookingViewModel
 
@@ -24,20 +28,18 @@ fun BookingScreen(context: BookingContext) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(25.dp)
     ) {
-        Text(
+        TitleText(
             modifier = Modifier.fillMaxWidth(),
             text = "Бронируем?",
-            textAlign = TextAlign.Center,
-            fontSize = 28.sp
+            textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
+        Spacer(modifier = Modifier.height(10.dp))
+        HeadlineText(
             modifier = Modifier.fillMaxWidth(),
             text = state.value.spaceName,
-            textAlign = TextAlign.Center,
-            fontSize = 28.sp
+            textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
@@ -47,24 +49,21 @@ fun BookingScreen(context: BookingContext) {
             fontSize = 32.sp
         )
         Spacer(modifier = Modifier.height(20.dp))
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
+        DsButton(
+            modifier = Modifier.fillMaxWidth(),
+            title = "Забронировать",
+            color = Color.BLACK,
             enabled = state.value.isSpaceLoaded,
             onClick = { viewModel.goBook() }
-        ) {
-            Text(text = "Забронировать")
-        }
-        Button(
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        DsButton(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.background),
+                .fillMaxWidth(),
+            title = "Отмена",
+            color = Color.GREY,
             enabled = state.value.isSpaceLoaded,
             onClick = { viewModel.cancel() }
-        ) {
-            Text(text = "Отмена")
-        }
+        )
     }
 }
