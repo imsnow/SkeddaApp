@@ -1,10 +1,6 @@
 package ru.profi.skedda.android.composables
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -32,10 +28,26 @@ fun ScheduleScreen() {
             .fillMaxWidth()
             .padding(25.dp)
     ) {
-        TitleText(text = state.value.date)
-        TimeChangerView(text = state.value.time) {
-            viewModel.plusTime()
-        }
+        TitleText(text = "Выберите время и свободную переговорку")
+        Spacer(modifier = Modifier.height(25.dp))
+        HeadlineText(
+            modifier = Modifier.fillMaxWidth(),
+            text = state.value.date,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        TimeChangerView(
+            text = state.value.time,
+            isMinusEnabled = true,
+            isPlusEnabled = true,
+            onMinusClicked = {
+                viewModel.minusTime()
+            },
+            onPlusClicked = {
+                viewModel.plusTime()
+            }
+        )
+        Spacer(modifier = Modifier.height(10.dp))
         DurationsView(
             list = state.value.durations,
             selectedDuration = state.value.selectedDuration

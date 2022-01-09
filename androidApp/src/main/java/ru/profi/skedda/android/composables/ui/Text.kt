@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.sp
 fun TitleText(
     modifier: Modifier = Modifier,
     text: String,
+    maxLines: Int = Int.MAX_VALUE,
     textAlign: TextAlign? = null
 ) {
     Text(
@@ -20,6 +21,7 @@ fun TitleText(
         fontSize = 28.sp,
         fontWeight = FontWeight.W500,
         color = ProfiTheme.textBlack,
+        maxLines = maxLines,
         textAlign = textAlign,
         lineHeight = 33.sp,
         letterSpacing = 0.2.sp

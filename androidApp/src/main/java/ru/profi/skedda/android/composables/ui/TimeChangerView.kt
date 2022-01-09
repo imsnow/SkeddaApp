@@ -26,34 +26,34 @@ import androidx.compose.ui.unit.sp
 @Preview(showBackground = true)
 fun TimeChangerView(
     text: String = "10:05",
+    isMinusEnabled: Boolean = true,
+    isPlusEnabled: Boolean = true,
+    onMinusClicked: () -> Unit = {},
     onPlusClicked: () -> Unit = {}
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-                imageVector = Icons.Filled.KeyboardArrowLeft,
-                contentDescription = "",
-                tint = MaterialTheme.colors.primary
-            )
-        }
-        Text(
+        DsButton(
+            title = "- 30 минут",
+            color = Color.GREY,
+            enabled = isMinusEnabled,
+            onClick = onMinusClicked
+        )
+        TitleText(
             text = text,
             modifier = Modifier.width(100.dp),
-            fontSize = 32.sp,
             maxLines = 1,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colors.primary
+            textAlign = TextAlign.Center
         )
-        IconButton(onClick = onPlusClicked) {
-            Icon(
-                imageVector = Icons.Filled.KeyboardArrowRight,
-                contentDescription = "",
-                tint = MaterialTheme.colors.primary
-            )
-        }
+        DsButton(
+            title = "+ 30 минут",
+            enabled = isPlusEnabled,
+            onClick = onPlusClicked
+        )
     }
 }

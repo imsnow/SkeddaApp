@@ -83,6 +83,10 @@ class ScheduleViewModel internal constructor(
         )
     }
 
+    fun minusTime() {
+
+    }
+
     fun plusTime() {
         val nowLocal = DateTimeTz.nowLocal()
         val round = nowLocal.local.round()
