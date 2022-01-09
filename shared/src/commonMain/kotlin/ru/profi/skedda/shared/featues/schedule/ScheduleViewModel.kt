@@ -1,8 +1,5 @@
 package ru.profi.skedda.shared.featues.schedule
 
-import com.soywiz.klock.DateFormat
-import com.soywiz.klock.DateTime
-import com.soywiz.klock.DateTimeTz
 import com.soywiz.klock.minutes
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -31,32 +28,15 @@ class ScheduleViewModel internal constructor(
         loadFreeSpaces()
     }
 
-    private fun DateTime.round(): DateTime {
-        val long = this.unixMillisLong
-        val min15 = 15.minutes.millisecondsLong
-        val min30 = 30.minutes.millisecondsLong
-        val d = (long + min15) / min30
-        return DateTime(unixMillis = (d * min30).toDouble())
-    }
-
     private fun loadFreeSpaces() {
-        val nowLocal = DateTimeTz.nowLocal()
-        val round = nowLocal.local.round()
-
-        val dateString = round.format(dateFormat)
-        val timeString = round.format(timeFormat)
-        _state.value = state.value.copy(
-            date = dateString,
-            time = timeString
-        )
         viewModelScope.launch(ceh) {
+            val currentFromTime = state.value.selectedFrom
             val spaces = loadFreeSpacesUseCase.loadFrom(
-                fromDateTime = round.unixMillisLong,
+                fromDateTime = currentFromTime,
                 duration = state.value.selectedDuration
             )
             _state.value = state.value.copy(
-                spaces = spaces,
-                selectedFrom = round.unixMillisLong
+                spaces = spaces
             )
         }
     }
@@ -84,31 +64,23 @@ class ScheduleViewModel internal constructor(
     }
 
     fun minusTime() {
+        val currentTime = state.value.currentDateTime
+        val newTime = currentTime - 30.minutes
 
+        _state.value = state.value.copy(
+            currentDateTime = newTime
+        )
+        loadFreeSpaces()
     }
 
     fun plusTime() {
-        val nowLocal = DateTimeTz.nowLocal()
-        val round = nowLocal.local.round()
-        val newTime = round + 30.minutes
+        val currentTime = state.value.currentDateTime
+        val newTime = currentTime + 30.minutes
 
-        val dateString = newTime.format(dateFormat)
-        val timeString = newTime.format(timeFormat)
         _state.value = state.value.copy(
-            date = dateString,
-            time = timeString
+            currentDateTime = newTime
         )
-        viewModelScope.launch(ceh) {
-            val spaces = loadFreeSpacesUseCase.loadFrom(
-                fromDateTime = newTime.unixMillisLong,
-                duration = state.value.selectedDuration
-            )
-            _state.value = state.value.copy(spaces = spaces)
-        }
+        loadFreeSpaces()
     }
 
-    companion object {
-        private val dateFormat = DateFormat("dd MMMM")
-        private val timeFormat = DateFormat("hh:mm")
-    }
 }
