@@ -32,7 +32,7 @@ data class ScheduleViewState(
     }
 
     companion object {
-        private val dateFormat = DateFormat("dd MMMM")
+        private val dateFormat = DateFormat("dd.MM")
         private val timeFormat = DateFormat("HH:mm")
     }
 }

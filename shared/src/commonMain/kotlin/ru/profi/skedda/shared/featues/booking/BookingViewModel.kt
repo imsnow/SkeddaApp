@@ -37,8 +37,16 @@ class BookingViewModel internal constructor(
         }
     }
 
-    fun goBook() {
-        println(">>> go book")
+    fun goBook(context: BookingContext) {
+        viewModelScope.launch {
+            bookSpaceUseCase.book(
+                id = context.spaceId,
+                start = context.from,
+                end = context.from + context.duration.millis
+            )
+            // TODO успех!
+            router.goToSchedule()
+        }
     }
 
     fun cancel() {

@@ -72,11 +72,14 @@ internal class SkeddaApi(networkClient: NetworkClient) {
         val url = Url("${USER_HOST}/bookings")
 
         val booking = Booking(
-            venue = venue,
+            venue = venue.venue,
+            venueuser = venue.venueuser,
             spaces = listOf(id),
             start = formatter.format(start),
             end = formatter.format(end)
         )
+
+        println(">>> book $booking")
 
         val result = client.post<String>(url) {
             contentType(ContentType.Application.Json)

@@ -4,8 +4,9 @@ import kotlinx.serialization.Serializable
 import ru.profi.skedda.shared.data.internal.Venue
 
 @Serializable
-class Booking(
-    val venue: Venue,
+data class Booking(
+    val venue: String,
+    val venueuser: String,
     val spaces: List<Long>,
     val title: String = "Тайтл",
     val start: String,

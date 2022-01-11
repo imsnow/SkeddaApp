@@ -54,7 +54,7 @@ fun BookingScreen(context: BookingContext) {
             title = "Забронировать",
             color = Color.BLACK,
             enabled = state.value.isSpaceLoaded,
-            onClick = { viewModel.goBook() }
+            onClick = { viewModel.goBook(context = context) }
         )
         Spacer(modifier = Modifier.height(10.dp))
         DsButton(

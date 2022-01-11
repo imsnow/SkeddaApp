@@ -30,7 +30,7 @@ fun ScheduleScreen() {
     ) {
         TitleText(text = "Выберите время и свободную переговорку")
         Spacer(modifier = Modifier.height(25.dp))
-        HeadlineText(
+        TitleText(
             modifier = Modifier.fillMaxWidth(),
             text = state.value.date,
             textAlign = TextAlign.Center
