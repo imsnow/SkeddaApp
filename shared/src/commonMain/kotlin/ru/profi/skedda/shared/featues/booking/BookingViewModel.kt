@@ -21,14 +21,12 @@ class BookingViewModel internal constructor(
         get() = _state
 
     fun loadSpace(context: BookingContext) {
-        println(">>> book id ${context.spaceId}")
         viewModelScope.launch {
             val space = loadSpaceUseCase.loadById(context.spaceId)
             val from = DateTime.fromUnix(context.from)
             val fromFormatted = from.format(timeFormat)
             val end = DateTime.fromUnix(context.from + context.duration.millis)
             val endFormatted = end.format(timeFormat)
-            println(">>> load space $space")
             _state.value = state.value.copy(
                 spaceName = space.name,
                 fromTo = "$fromFormatted - $endFormatted",

@@ -9,6 +9,7 @@ import org.koin.core.qualifier.Qualifier
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 import ru.profi.skedda.shared.Storage
+import ru.profi.skedda.shared.featues.account.AccountViewModel
 import ru.profi.skedda.shared.featues.booking.BookingViewModel
 import ru.profi.skedda.shared.featues.login.LoginViewModel
 import ru.profi.skedda.shared.featues.main.MainViewModel
@@ -44,6 +45,7 @@ fun viewModules() = module {
     viewModel { ScheduleViewModel(get(), get()) }
     viewModel { MainViewModel(get(), get()) }
     viewModel { BookingViewModel(get(), get() ,get()) }
+    viewModel { AccountViewModel(get()) }
 }
 
 fun useCases() = module {
