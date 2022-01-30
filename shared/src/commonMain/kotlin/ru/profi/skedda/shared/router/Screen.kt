@@ -28,4 +28,9 @@ sealed class Screen {
             duration: BookingDuration
         ) = "booking/$id/$from/$duration"
     }
+
+    object Account : Screen() {
+        override val route: String
+            get() = "account"
+    }
 }

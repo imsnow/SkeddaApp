@@ -14,11 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import ru.profi.skedda.android.composables.BookingScreen
-import ru.profi.skedda.android.composables.BottomSheetScreen
-import ru.profi.skedda.android.composables.LoginScreen
-import ru.profi.skedda.android.composables.MainScreen
-import ru.profi.skedda.android.composables.ScheduleScreen
+import ru.profi.skedda.android.composables.*
 import ru.profi.skedda.shared.data.BookingDuration
 import ru.profi.skedda.shared.data.BookingDuration.Companion.fromMillis
 import ru.profi.skedda.shared.featues.booking.BookingContext
@@ -65,6 +61,7 @@ class ComposeRouter() : Router {
                     )
                     BookingScreen(context = context)
                 }
+                composable(Screen.Account.route) { AccountScreen() }
             }
             this.navController = navController
             this.bottomSheetState = bottomSheetState
@@ -81,5 +78,9 @@ class ComposeRouter() : Router {
 
     override fun showBooking(id: Long, from: Long, duration: BookingDuration) {
         navController.navigate(Screen.Booking.routeTo(id, from, duration))
+    }
+
+    override fun goToAccount() {
+        navController.navigate(Screen.Account.route)
     }
 }

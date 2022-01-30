@@ -55,6 +55,7 @@ class LoadFreeSpacesUseCase internal constructor(
     private suspend fun loadWebsAndCache() {
         val webs = api.webs()
         println(">>> load webs success $webs")
+        storage.saveAccount(webs.venueUser)
         storage.saveSpaces(webs.spaces)
         storage.saveVenue(webs.venue)
     }

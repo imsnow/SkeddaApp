@@ -11,4 +11,6 @@ interface Router {
     fun goToLogin()
 
     fun showBooking(id: Long, from: Long, duration: BookingDuration)
+
+    fun goToAccount()
 }

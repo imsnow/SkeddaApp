@@ -83,4 +83,7 @@ class ScheduleViewModel internal constructor(
         loadFreeSpaces()
     }
 
+    fun onAccountClicked() {
+        router.goToAccount()
+    }
 }

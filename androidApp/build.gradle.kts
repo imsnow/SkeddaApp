@@ -11,6 +11,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:${Versions.activityComposeVersion}")
     implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
     implementation("androidx.compose.material:material:${Versions.composeVersion}")
+//    implementation("androidx.compose.material:material-icons:${Versions.composeVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutineVersion}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutineVersion}")
     with(Deps.Koin) {

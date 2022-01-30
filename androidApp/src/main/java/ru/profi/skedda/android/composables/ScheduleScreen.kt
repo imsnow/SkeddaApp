@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -23,39 +26,59 @@ fun ScheduleScreen() {
     val viewModel: ScheduleViewModel = getViewModel()
     val state = viewModel.state.collectAsState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(25.dp)
-    ) {
-        TitleText(text = "Выберите время и свободную переговорку")
-        Spacer(modifier = Modifier.height(25.dp))
-        TitleText(
-            modifier = Modifier.fillMaxWidth(),
-            text = state.value.date,
-            textAlign = TextAlign.Center
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        TimeChangerView(
-            text = state.value.time,
-            isMinusEnabled = true,
-            isPlusEnabled = true,
-            onMinusClicked = {
-                viewModel.minusTime()
-            },
-            onPlusClicked = {
-                viewModel.plusTime()
-            }
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        DurationsView(
-            list = state.value.durations,
-            selectedDuration = state.value.selectedDuration
-        ) { bookingDuration ->
-            viewModel.selectDuration(bookingDuration)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    HeadlineText(text = "Расписание")
+                },
+                backgroundColor = ProfiTheme.white,
+                actions = {
+                    IconButton(
+                        onClick = {
+                            viewModel.onAccountClicked()
+                        }
+                    ) {
+                        Icon(Icons.Rounded.AccountCircle, contentDescription = "Close")
+                    }
+                }
+            )
         }
-        Spaces(list = state.value.spaces) { id ->
-            viewModel.onSpaceClicked(id)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            LRegularText(text = "Выберите время и свободную переговорку")
+            Spacer(modifier = Modifier.height(20.dp))
+            TitleText(
+                modifier = Modifier.fillMaxWidth(),
+                text = state.value.date,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            TimeChangerView(
+                text = state.value.time,
+                isMinusEnabled = true,
+                isPlusEnabled = true,
+                onMinusClicked = {
+                    viewModel.minusTime()
+                },
+                onPlusClicked = {
+                    viewModel.plusTime()
+                }
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            DurationsView(
+                list = state.value.durations,
+                selectedDuration = state.value.selectedDuration
+            ) { bookingDuration ->
+                viewModel.selectDuration(bookingDuration)
+            }
+            Spaces(list = state.value.spaces) { id ->
+                viewModel.onSpaceClicked(id)
+            }
         }
     }
 }
@@ -93,3 +116,14 @@ private fun Spaces(list: List<FreeSpace>, onSpaceClick: (Long) -> Unit) {
         }
     }
 }
+
+//@Composable
+//fun AppBarIcon() {
+//    Container(width = ActionIconDiameter, height = ActionIconDiameter) {
+//        Ripple(bounded = false) {
+//            Clickable(onClick = onClick) {
+//                SimpleImage(icon)
+//            }
+//        }
+//    }
+//}
