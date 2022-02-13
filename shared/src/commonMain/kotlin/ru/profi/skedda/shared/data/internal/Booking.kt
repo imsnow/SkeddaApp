@@ -5,15 +5,13 @@ import ru.profi.skedda.shared.serializers.SkeddaDateTimeSerializer
 
 @Serializable
 data class Booking(
-    @Serializable(with = SkeddaDateTimeSerializer::class)
-    val createdDate: Long,
+    val id: Long,
     @Serializable(with = SkeddaDateTimeSerializer::class)
     val start: Long,
     @Serializable(with = SkeddaDateTimeSerializer::class)
     val end: Long,
     val spaces: List<Long>,
     val title: String?,
-    val id: Long,
-    val type: Int,
-    val recurrenceRule: String?,
+//    val type: Int,
+//    val recurrenceRule: String?,
 )

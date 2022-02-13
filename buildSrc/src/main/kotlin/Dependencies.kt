@@ -8,6 +8,7 @@ object Versions {
     const val serializationVersion = "1.3.0"
     const val koinVersion = "3.1.4"
     const val klockVersion = "2.2.2"
+    const val napierVersion = "2.4.0"
 
     // Android
     const val composeVersion = "1.0.4"
@@ -19,6 +20,7 @@ object Versions {
 
 
 object Deps {
+    // TODO
     object Koin {
         const val core = "io.insert-koin:koin-core:${Versions.koinVersion}"
         const val android = "io.insert-koin:koin-android:${Versions.koinVersion}"

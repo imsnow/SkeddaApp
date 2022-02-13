@@ -1,6 +1,6 @@
 package ru.profi.skedda.shared.usecases
 
-import com.soywiz.klock.days
+import com.soywiz.klock.*
 import ru.profi.skedda.shared.Storage
 import ru.profi.skedda.shared.data.BookingDuration
 import ru.profi.skedda.shared.data.internal.Space
@@ -18,27 +18,43 @@ class LoadFreeSpacesUseCase internal constructor(
     ): List<FreeSpace> {
         val spaces = loadSpaces()
 
-        val endDateTime = fromDateTime + 1.days.millisecondsLong
+        val fromDate = DateTime.fromUnix(fromDateTime) + 1.days
+        val endDateTime = fromDate.endOfDay.unixMillisLong
         val bookingList = api.bookingList(fromDateTime, endDateTime)
 
-        val durationEnd = fromDateTime + duration.millis
+        val durationEnd = DateTime.fromUnix(fromDateTime + duration.millis)
 
-        class BookingStart(val id: Long, val start: Long)
+//        val dayKey = fromDate.format("YYYY-MM-dd")
+//        val recurrenceBookIds = bookingList.bookingslist
+//            .idx[dayKey]
+//            ?.jsonArray
+//            ?.map { it.jsonPrimitive.long } ?: emptyList()
+//        println(">>> recurr idx $recurrenceBookIds")
 
-        val bookings = bookingList.bookings.map {
+
+        val existBookingList = bookingList.bookings.map {
             val id = it.spaces.first()
-            BookingStart(id, it.start)
+//            if (recurrenceBookIds.contains(id)) {
+//                null
+//            } else {
+            val startTime = DateTime.fromUnix(it.start).time
+            val endTime = DateTime.fromUnix(it.end).time
+            println(">>> id $id time $startTime space ${spaces.find { it.id == id }?.name}")
+
+            ExistBooking(id, startTime = startTime, endTime = endTime)
+//            }
         }
 
-        val freeSpaces = spaces.mapNotNull { serverSpace ->
-            val id = serverSpace.id
-            val findBooking = bookings.find { it.id == id }
+        val freeSpaces = spaces.mapNotNull { space ->
+            val currentSpaceId = space.id
+            val currentSpaceBookings = existBookingList.filter { it.id == currentSpaceId }
 
-            if (findBooking != null && findBooking.start < durationEnd) {
+            if (currentSpaceBookings.hasBookings(start = fromDate.time, end = durationEnd.time)) {
+                println(">>> has bookings ${space.name}")
                 null
             } else {
-                val name = serverSpace.name
-                FreeSpace(id, name)
+                val name = space.name
+                FreeSpace(currentSpaceId, name)
             }
         }
         return freeSpaces
@@ -58,5 +74,22 @@ class LoadFreeSpacesUseCase internal constructor(
         storage.saveAccount(webs.venueUser)
         storage.saveSpaces(webs.spaces)
         storage.saveVenue(webs.venue)
+    }
+
+
+    data class ExistBooking(val id: Long, val startTime: Time, val endTime: Time)
+
+    private fun ExistBooking.inSearchRange(start: Time, end: Time): Boolean {
+        if (startTime >= start && startTime < end) return true
+        if (endTime > start && endTime <= end) return true
+        return false
+    }
+
+    private fun List<ExistBooking>.hasBookings(start: Time, end: Time): Boolean {
+        this.forEach { existBooking ->
+            val inSearchRange = existBooking.inSearchRange(start, end)
+            if (inSearchRange) return true
+        }
+        return false
     }
 }

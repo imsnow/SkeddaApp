@@ -4,7 +4,6 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import ru.profi.skedda.shared.featues.booking.BookingViewState
 import ru.profi.skedda.shared.usecases.LoadAccountInfoUseCase
 
 class AccountViewModel internal constructor(

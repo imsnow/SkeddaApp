@@ -41,6 +41,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.serializationVersion}")
                 implementation("com.soywiz.korlibs.klock:klock:${Versions.klockVersion}")
                 implementation(Deps.Koin.core)
+                implementation("io.github.aakira:napier:${Versions.napierVersion}")
             }
         }
 //        val commonTest by getting {

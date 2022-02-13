@@ -28,6 +28,7 @@ class ScheduleViewModel internal constructor(
         loadFreeSpaces()
     }
 
+    // TODO добавить стейт если нет не одной свободной переговорки
     private fun loadFreeSpaces() {
         viewModelScope.launch(ceh) {
             val currentFromTime = state.value.selectedFrom
