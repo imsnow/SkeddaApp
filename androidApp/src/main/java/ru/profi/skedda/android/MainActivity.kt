@@ -7,12 +7,12 @@ import androidx.compose.material.ExperimentalMaterialApi
 import org.koin.android.ext.android.inject
 import ru.profi.skedda.shared.router.Router
 
+@ExperimentalMaterialApi
 class MainActivity : ComponentActivity() {
 
     @ExperimentalMaterialApi
     val router: Router by inject()
 
-    @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (router as ComposeRouter).initWithActivity(this)

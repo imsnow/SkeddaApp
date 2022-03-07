@@ -79,8 +79,6 @@ internal class SkeddaApi(networkClient: NetworkClient) {
             end = formatter.format(end)
         )
 
-        println(">>> book $booking")
-
         val result = client.post<String>(url) {
             contentType(ContentType.Application.Json)
             header(KEY_TOKEN_HEADER, verificationToken)

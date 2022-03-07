@@ -2,16 +2,16 @@
 
 object Versions {
     // Common
-    const val kotlinVersion = "1.5.31"
-    const val ktorVersion = "1.6.4"
-    const val coroutineVersion = "1.5.2-native-mt"
-    const val serializationVersion = "1.3.0"
-    const val koinVersion = "3.1.4"
-    const val klockVersion = "2.2.2"
+    const val kotlinVersion = "1.6.10"
+    const val ktorVersion = "1.6.7"
+    const val coroutineVersion = "1.6.0-native-mt"
+    const val serializationVersion = "1.3.2"
+    const val koinVersion = "3.1.5"
+    const val klockVersion = "2.4.13"
     const val napierVersion = "2.4.0"
 
     // Android
-    const val composeVersion = "1.0.4"
+    const val composeVersion = "1.1.1"
     const val activityComposeVersion = "1.4.0"
     const val compileSdkVersion = 31
     const val targetSdkVersion = compileSdkVersion
