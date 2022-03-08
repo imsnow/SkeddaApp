@@ -1,6 +1,8 @@
 package ru.profi.skedda.shared.usecases
 
 import com.soywiz.klock.*
+import ru.profi.skedda.shared.ExistBooking
+import ru.profi.skedda.shared.SpacesRepository
 import ru.profi.skedda.shared.Storage
 import ru.profi.skedda.shared.data.BookingDuration
 import ru.profi.skedda.shared.data.internal.Space
@@ -9,14 +11,14 @@ import ru.profi.skedda.shared.network.SkeddaApi
 
 class LoadFreeSpacesUseCase internal constructor(
     private val api: SkeddaApi,
-    private val storage: Storage
+    private val spacesRepository: SpacesRepository
 ) {
 
     suspend fun loadFrom(
         fromDateTime: Long,
         duration: BookingDuration
     ): List<FreeSpace> {
-        val spaces = loadSpaces()
+        val spaces = spacesRepository.loadSpaces()
 
         val fromDate = DateTime.fromUnix(fromDateTime) + 1.days
         val endDateTime = fromDate.endOfDay.unixMillisLong
@@ -59,25 +61,6 @@ class LoadFreeSpacesUseCase internal constructor(
         }
         return freeSpaces
     }
-
-    private suspend fun loadSpaces(): List<Space> {
-        val cacheSpaces = storage.loadSpaces()
-        if (cacheSpaces.isEmpty()) {
-            loadWebsAndCache()
-        }
-        return storage.loadSpaces()
-    }
-
-    private suspend fun loadWebsAndCache() {
-        val webs = api.webs()
-        println(">>> load webs success $webs")
-        storage.saveAccount(webs.venueUser)
-        storage.saveSpaces(webs.spaces)
-        storage.saveVenue(webs.venue)
-    }
-
-
-    data class ExistBooking(val id: Long, val startTime: Time, val endTime: Time)
 
     private fun ExistBooking.inSearchRange(start: Time, end: Time): Boolean {
         if (startTime >= start && startTime < end) return true

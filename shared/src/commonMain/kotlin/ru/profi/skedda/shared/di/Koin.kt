@@ -8,6 +8,7 @@ import org.koin.core.module.Module
 import org.koin.core.qualifier.Qualifier
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
+import ru.profi.skedda.shared.SpacesRepository
 import ru.profi.skedda.shared.Storage
 import ru.profi.skedda.shared.featues.account.AccountViewModel
 import ru.profi.skedda.shared.featues.booking.BookingViewModel
@@ -33,6 +34,7 @@ fun commonModules() = module {
     single { EmailValidator }
     single { PasswordValidator }
     single { Storage() }
+    single { SpacesRepository(get(), get()) }
 }
 
 fun networkModule() = module {
@@ -42,10 +44,10 @@ fun networkModule() = module {
 
 fun viewModules() = module {
     viewModel { LoginViewModel(get(), get(), get(), get()) }
-    viewModel { ScheduleViewModel(get(), get()) }
+    viewModel { ScheduleViewModel(get(), get(), get(), get()) }
     viewModel { MainViewModel(get(), get()) }
-    viewModel { BookingViewModel(get(), get() ,get()) }
-    viewModel { AccountViewModel(get()) }
+    viewModel { BookingViewModel(get(), get(), get()) }
+    viewModel { AccountViewModel(get(), get()) }
 }
 
 fun useCases() = module {
@@ -55,6 +57,7 @@ fun useCases() = module {
     single { LoadAccountInfoUseCase(get()) }
     single { LoadSpaceUseCase(get()) }
     single { BookSpaceUseCase(get(), get()) }
+    single { LoadMyBookingsUseCase(get(), get()) }
 }
 
 inline fun <reified T : ViewModel> Module.viewModel(

@@ -35,11 +35,17 @@ fun ScheduleScreen() {
                 backgroundColor = ProfiTheme.white,
                 actions = {
                     IconButton(
-                        onClick = {
-                            viewModel.onAccountClicked()
-                        }
+                        onClick = { viewModel.onAccountClicked() }
                     ) {
-                        Icon(Icons.Rounded.AccountCircle, contentDescription = "Close")
+                        BadgedBox(badge = {
+                            if (state.value.accountBookingCount > 0) {
+                                Badge {
+                                    Text(text = state.value.accountBookingCount.toString())
+                                }
+                            }
+                        }) {
+                            Icon(Icons.Rounded.AccountCircle, contentDescription = "Close")
+                        }
                     }
                 }
             )

@@ -1,5 +1,6 @@
 package ru.profi.skedda.shared.featues.schedule
 
+import com.soywiz.klock.DateTime
 import com.soywiz.klock.minutes
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -8,10 +9,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.profi.skedda.shared.data.BookingDuration
 import ru.profi.skedda.shared.router.Router
+import ru.profi.skedda.shared.usecases.LoadAccountInfoUseCase
 import ru.profi.skedda.shared.usecases.LoadFreeSpacesUseCase
+import ru.profi.skedda.shared.usecases.LoadMyBookingsUseCase
 
 class ScheduleViewModel internal constructor(
     private val loadFreeSpacesUseCase: LoadFreeSpacesUseCase,
+    private val accountInfoUseCase: LoadAccountInfoUseCase,
+    private val loadMyBookingsUseCase: LoadMyBookingsUseCase,
     private val router: Router
 ) : ViewModel() {
 
@@ -28,6 +33,18 @@ class ScheduleViewModel internal constructor(
         loadFreeSpaces()
     }
 
+    private suspend fun loadAccountBookingCount() {
+        val account = accountInfoUseCase.loadAccount()
+        val now = DateTime.now()
+        val accountBookingsCount = loadMyBookingsUseCase.loadAccountBookingsCount(
+            fromDate = now.unixMillisLong,
+            venueUserId = account.id
+        )
+        _state.value = state.value.copy(
+            accountBookingCount = accountBookingsCount
+        )
+    }
+
     // TODO добавить стейт если нет не одной свободной переговорки
     private fun loadFreeSpaces() {
         viewModelScope.launch(ceh) {
@@ -39,6 +56,7 @@ class ScheduleViewModel internal constructor(
             _state.value = state.value.copy(
                 spaces = spaces
             )
+            loadAccountBookingCount()
         }
     }
 

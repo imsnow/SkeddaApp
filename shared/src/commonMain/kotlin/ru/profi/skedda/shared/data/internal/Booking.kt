@@ -12,6 +12,7 @@ data class Booking(
     val end: Long,
     val spaces: List<Long>,
     val title: String?,
+    val venueuser: Long?
 //    val type: Int,
 //    val recurrenceRule: String?,
 )

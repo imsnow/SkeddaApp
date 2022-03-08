@@ -12,7 +12,8 @@ data class ScheduleViewState(
     val durations: List<BookingDuration> = BookingDuration.values().toList(),
     val selectedDuration: BookingDuration = BookingDuration.ONE_HOUR,
     val isLoading: Boolean = true,
-    val spaces: List<FreeSpace> = emptyList()
+    val spaces: List<FreeSpace> = emptyList(),
+    val accountBookingCount: Int = 0
 ) {
 
     private val roundDateTime = currentDateTime.local.round()

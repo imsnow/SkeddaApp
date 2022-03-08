@@ -1,13 +1,16 @@
 package ru.profi.skedda.shared.featues.account
 
+import com.soywiz.klock.DateTime
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.profi.skedda.shared.usecases.LoadAccountInfoUseCase
+import ru.profi.skedda.shared.usecases.LoadMyBookingsUseCase
 
 class AccountViewModel internal constructor(
-    private val loadAccountInfoUseCase: LoadAccountInfoUseCase
+    private val loadAccountInfoUseCase: LoadAccountInfoUseCase,
+    private val loadMyBookingsUseCase: LoadMyBookingsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AccountViewState())
@@ -22,6 +25,12 @@ class AccountViewModel internal constructor(
                 email = account.username,
                 name = "${account.firstName} ${account.lastName}"
             )
+            val now = DateTime.now()
+            val accountBookings = loadMyBookingsUseCase.loadMyBookings(
+                fromDate = now.unixMillisLong,
+                venueUserId = account.id
+            )
+            println(">>> account bookings ${accountBookings}")
         }
     }
 
