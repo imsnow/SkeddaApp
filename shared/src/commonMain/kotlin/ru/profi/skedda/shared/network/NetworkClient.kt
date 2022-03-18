@@ -11,12 +11,14 @@ internal class NetworkClient {
 
     val client = HttpClient {
         install(JsonFeature) {
-            serializer = KotlinxSerializer(KoltinJson {
-                ignoreUnknownKeys = true
-                isLenient = true
-                coerceInputValues = true
-                encodeDefaults = true
-            })
+            serializer = KotlinxSerializer(
+                KoltinJson {
+                    ignoreUnknownKeys = true
+                    isLenient = true
+                    coerceInputValues = true
+                    encodeDefaults = true
+                }
+            )
         }
         install(Logging) {
             logger = Logger.SIMPLE

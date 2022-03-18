@@ -18,7 +18,6 @@ kotlin {
         else -> ::iosX64
     }
 
-
     iosTarget("ios") {}
 
     cocoapods {

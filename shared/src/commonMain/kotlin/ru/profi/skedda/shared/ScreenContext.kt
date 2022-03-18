@@ -1,4 +1,3 @@
 package ru.profi.skedda.shared
 
-interface ScreenContext {
-}
+interface ScreenContext

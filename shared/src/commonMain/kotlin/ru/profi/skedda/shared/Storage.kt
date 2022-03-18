@@ -46,7 +46,7 @@ internal class Storage {
 
     fun saveAccount(accounts: List<VenueUser>) = cacheVenueUser.setAll(accounts)
 
-    private fun <T: Any> MutableList<T>.setAll(items: List<T>) {
+    private fun <T : Any> MutableList<T>.setAll(items: List<T>) {
         this.clear()
         this.addAll(items)
     }

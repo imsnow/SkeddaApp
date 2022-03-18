@@ -6,19 +6,18 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.getViewModel
 import ru.profi.skedda.android.composables.ui.*
 import ru.profi.skedda.shared.data.BookingDuration
-import ru.profi.skedda.shared.featues.schedule.ScheduleViewModel
 import ru.profi.skedda.shared.data.FreeSpace
+import ru.profi.skedda.shared.featues.schedule.ScheduleViewModel
 
 @Composable
 fun ScheduleScreen() {
@@ -26,6 +25,9 @@ fun ScheduleScreen() {
     val viewModel: ScheduleViewModel = getViewModel()
     val state = viewModel.state.collectAsState()
 
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.launch()
+    })
     Scaffold(
         topBar = {
             TopAppBar(
@@ -123,8 +125,8 @@ private fun Spaces(list: List<FreeSpace>, onSpaceClick: (Long) -> Unit) {
     }
 }
 
-//@Composable
-//fun AppBarIcon() {
+// @Composable
+// fun AppBarIcon() {
 //    Container(width = ActionIconDiameter, height = ActionIconDiameter) {
 //        Ripple(bounded = false) {
 //            Clickable(onClick = onClick) {
@@ -132,4 +134,4 @@ private fun Spaces(list: List<FreeSpace>, onSpaceClick: (Long) -> Unit) {
 //            }
 //        }
 //    }
-//}
+// }

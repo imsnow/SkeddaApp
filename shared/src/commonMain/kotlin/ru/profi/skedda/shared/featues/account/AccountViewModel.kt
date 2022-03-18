@@ -30,7 +30,7 @@ class AccountViewModel internal constructor(
                 fromDate = now.unixMillisLong,
                 venueUserId = account.id
             )
-            println(">>> account bookings ${accountBookings}")
+            println(">>> account bookings $accountBookings")
         }
     }
 

@@ -16,6 +16,8 @@ object Versions {
     const val compileSdkVersion = 31
     const val targetSdkVersion = compileSdkVersion
     const val minSdkVersion = 21
+
+    const val ktlint = "10.2.1"
 }
 
 

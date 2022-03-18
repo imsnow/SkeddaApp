@@ -13,7 +13,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import ru.profi.skedda.android.composables.*
 import ru.profi.skedda.shared.data.BookingDuration
 import ru.profi.skedda.shared.data.BookingDuration.Companion.fromMillis

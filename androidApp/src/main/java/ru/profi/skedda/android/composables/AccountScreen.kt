@@ -13,7 +13,6 @@ import ru.profi.skedda.android.composables.ui.DsButton
 import ru.profi.skedda.android.composables.ui.HeadlineText
 import ru.profi.skedda.android.composables.ui.TitleText
 import ru.profi.skedda.shared.featues.account.AccountViewModel
-import ru.profi.skedda.shared.featues.booking.BookingViewModel
 
 @Preview
 @Composable

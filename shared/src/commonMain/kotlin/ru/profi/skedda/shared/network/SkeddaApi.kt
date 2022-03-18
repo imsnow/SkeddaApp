@@ -4,14 +4,14 @@ import com.soywiz.klock.ISO8601
 import com.soywiz.klock.format
 import io.ktor.client.request.*
 import io.ktor.http.*
-import ru.profi.skedda.shared.network.login.LoginPayload
-import ru.profi.skedda.shared.network.login.LoginRequestPayload
+import ru.profi.skedda.shared.data.UserLogin
 import ru.profi.skedda.shared.data.internal.BookingLists
 import ru.profi.skedda.shared.data.internal.Venue
 import ru.profi.skedda.shared.data.internal.Webs
 import ru.profi.skedda.shared.network.booking.Booking
 import ru.profi.skedda.shared.network.booking.BookingPayload
-import ru.profi.skedda.shared.data.UserLogin
+import ru.profi.skedda.shared.network.login.LoginPayload
+import ru.profi.skedda.shared.network.login.LoginRequestPayload
 
 internal class SkeddaApi(networkClient: NetworkClient) {
 
@@ -23,7 +23,7 @@ internal class SkeddaApi(networkClient: NetworkClient) {
 
     @Throws(Exception::class)
     suspend fun login(email: String, password: String): UserLogin {
-        val url = Url("${MAIN_HOST}/logins")
+        val url = Url("$MAIN_HOST/logins")
         val loginData = LoginRequestPayload(
             LoginPayload(
                 username = email,
@@ -46,7 +46,7 @@ internal class SkeddaApi(networkClient: NetworkClient) {
     }
 
     private suspend fun requestVerificationToken(): String {
-        val url = Url("${USER_HOST}/booking")
+        val url = Url("$USER_HOST/booking")
         val html = client.get<String>(url)
 
         // FIXME: 01.11.2021 сделать нормальный парсинг
@@ -59,17 +59,17 @@ internal class SkeddaApi(networkClient: NetworkClient) {
 
     @Throws(Exception::class)
     suspend fun webs(): Webs {
-        val verificationToken = retrieveVerificationToken();
+        val verificationToken = retrieveVerificationToken()
 
-        val url = Url("${USER_HOST}/webs")
+        val url = Url("$USER_HOST/webs")
         return client.get(url) {
             header(KEY_TOKEN_HEADER, verificationToken)
         }
     }
 
     suspend fun booking(venue: Venue, id: Long, start: Long, end: Long) {
-        val verificationToken = retrieveVerificationToken();
-        val url = Url("${USER_HOST}/bookings")
+        val verificationToken = retrieveVerificationToken()
+        val url = Url("$USER_HOST/bookings")
 
         val booking = Booking(
             venue = venue.venue,
@@ -88,8 +88,8 @@ internal class SkeddaApi(networkClient: NetworkClient) {
     }
 
     suspend fun bookingList(start: Long, end: Long): BookingLists {
-        val verificationToken = this.retrieveVerificationToken();
-        val url = Url("${USER_HOST}/bookingslists")
+        val verificationToken = this.retrieveVerificationToken()
+        val url = Url("$USER_HOST/bookingslists")
 
         val bookingList = client.get<BookingLists>(url) {
             header(KEY_TOKEN_HEADER, verificationToken)
@@ -101,11 +101,10 @@ internal class SkeddaApi(networkClient: NetworkClient) {
         return bookingList
     }
 
-
     internal companion object {
 
         private const val MAIN_HOST = "https://app.skedda.com"
-        private const val USER_HOST = "https://profi.skedda.com" //"https://ruwinmike.skedda.com"
+        private const val USER_HOST = "https://profi.skedda.com" // "https://ruwinmike.skedda.com"
 
         private const val KEY_TOKEN_HEADER = "X-Skedda-RequestVerificationToken"
     }

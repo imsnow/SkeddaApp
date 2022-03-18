@@ -20,5 +20,4 @@ internal object SkeddaDateTimeSerializer : KSerializer<Long> {
     }
 
     override fun serialize(encoder: Encoder, value: Long) = Unit // not used
-
 }

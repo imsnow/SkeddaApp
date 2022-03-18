@@ -1,7 +1,6 @@
 package ru.profi.skedda.shared.network.booking
 
 import kotlinx.serialization.Serializable
-import ru.profi.skedda.shared.data.internal.Venue
 
 @Serializable
 data class Booking(

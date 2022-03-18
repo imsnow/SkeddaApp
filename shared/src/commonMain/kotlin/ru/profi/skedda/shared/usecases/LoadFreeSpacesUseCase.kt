@@ -3,9 +3,7 @@ package ru.profi.skedda.shared.usecases
 import com.soywiz.klock.*
 import ru.profi.skedda.shared.ExistBooking
 import ru.profi.skedda.shared.SpacesRepository
-import ru.profi.skedda.shared.Storage
 import ru.profi.skedda.shared.data.BookingDuration
-import ru.profi.skedda.shared.data.internal.Space
 import ru.profi.skedda.shared.data.FreeSpace
 import ru.profi.skedda.shared.network.SkeddaApi
 
@@ -32,7 +30,6 @@ class LoadFreeSpacesUseCase internal constructor(
 //            ?.jsonArray
 //            ?.map { it.jsonPrimitive.long } ?: emptyList()
 //        println(">>> recurr idx $recurrenceBookIds")
-
 
         val existBookingList = bookingList.bookings.map {
             val id = it.spaces.first()

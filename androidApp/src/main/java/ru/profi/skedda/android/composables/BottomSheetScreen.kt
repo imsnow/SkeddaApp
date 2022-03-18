@@ -14,6 +14,5 @@ fun BottomSheetScreen() {
             .fillMaxSize()
             .background(Color.Blue)
     ) {
-
     }
 }

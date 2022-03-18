@@ -29,7 +29,8 @@ class ScheduleViewModel internal constructor(
         router.goToLogin()
     }
 
-    init {
+    fun launch() {
+        println(">>> launch")
         loadFreeSpaces()
     }
 
